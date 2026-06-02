@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TadevaGAP">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>TadevaGAP 2026</title>
+<style>
+:root{
+  --gold:#c8a84b;--gold2:#a8882b;--dark:#0f1117;--dark2:#161a24;--dark3:#1e2433;
+  --card:#242938;--border:#2e3448;--text:#e8eaf2;--text2:#8b91a8;--text3:#4a5070;
+  --green:#4caf7d;--red:#e05a5a;--blue:#5a9fe0;--orange:#e0955a;--purple:#9a5ae0;
+  --s1:#4caf7d;--s2:#5a9fe0;--s3:#e0c45a;--s4:#e0955a;--s5:#9a5ae0;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:var(--text);font-size:14px}
+
+/* ── LAYOUT ── */
+.app{display:flex;flex-direction:column;height:100vh}
+.topbar{background:var(--dark2);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:50}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo img{width:30px;height:30px;border-radius:7px;object-fit:cover}
+.topbar-logo span{font-weight:700;font-size:15px;letter-spacing:-.3px}
+.topbar-logo small{color:var(--text3);font-size:11px;margin-left:2px}
+.body{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:280px;background:var(--dark2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+@media(max-width:700px){
+  .sidebar{position:fixed;left:0;top:52px;bottom:0;width:85vw;max-width:300px;z-index:40;transform:translateX(-100%);transition:transform .25s ease}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{display:none;position:fixed;inset:0;top:52px;background:rgba(0,0,0,.5);z-index:39}
+  .sidebar-overlay.show{display:block}
+  .main{width:100%!important}
+}
+.sidebar-search{padding:12px;border-bottom:1px solid var(--border)}
+.search-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none}
+.search-input:focus{border-color:var(--gold)}
+.search-input::placeholder{color:var(--text3)}
+.producer-list{flex:1;overflow-y:auto;padding:6px}
+.producer-item{padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:3px;transition:background .15s}
+.producer-item:hover{background:var(--dark3)}
+.producer-item.active{background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3)}
+.pi-name{font-size:13px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pi-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3)}
+.pi-dots{display:flex;gap:3px}
+.pi-dot{width:8px;height:8px;border-radius:2px;border:1px solid var(--border)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.stage-tabs{display:flex;background:var(--dark2);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
+.stage-tabs::-webkit-scrollbar{height:0}
+.stage-tab{flex:1;min-width:fit-content;padding:12px 14px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;text-align:center}
+.stage-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.form-area{flex:1;overflow-y:auto;padding:16px}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--text3);text-align:center;padding:32px}
+.empty-state svg{opacity:.3}
+.empty-state h3{font-size:16px;color:var(--text2)}
+.empty-state p{font-size:13px;line-height:1.5}
+
+/* ── FORM ── */
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.s1-title{color:var(--s1)}.s2-title{color:var(--s2)}.s3-title{color:var(--s3)}.s4-title{color:var(--s4)}.s5-title{color:var(--s5)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr}
+.form-grid.full{grid-template-columns:1fr}
+@media(max-width:500px){.form-grid,.form-grid.three{grid-template-columns:1fr}}
+.field-group{display:flex;flex-direction:column;gap:5px}
+.field-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.req{color:var(--red)}
+.field-input,.field-select,.field-textarea{background:var(--dark3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--text);font-size:13px;outline:none;width:100%;transition:border-color .15s;font-family:inherit}
+.field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--gold)}
+.field-textarea{resize:vertical;min-height:70px}
+.field-select option{background:var(--dark3)}
+
+/* ── CHECKBOX ── */
+.checkbox-group{display:flex;flex-wrap:wrap;gap:6px}
+.cb-item{display:flex;align-items:center;gap:5px;background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;cursor:pointer;font-size:12px;transition:all .15s;user-select:none}
+.cb-item.checked{background:rgba(200,168,75,.15);border-color:var(--gold);color:var(--gold)}
+.cb-item input{display:none}
+
+/* ── GEO ── */
+.geo-section{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px}
+.geo-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.geo-btn-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.geo-btn{flex:1;min-width:120px;background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;justify-content:center}
+.geo-btn:hover{border-color:var(--gold);color:var(--gold)}
+.finca-name-row{display:flex;gap:8px;margin-bottom:10px}
+.finca-name-input{flex:1;background:var(--dark2);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text);font-size:12px;outline:none}
+.finca-name-input:focus{border-color:var(--gold)}
+.coord-list{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.coord-item{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.coord-item-info{flex:1}
+.coord-name{font-weight:600;color:var(--text);margin-bottom:2px}
+.coord-vals{color:var(--text3);font-family:monospace}
+.coord-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:2px 6px;border-radius:4px;font-size:13px}
+.coord-del:hover{color:var(--red)}
+.geo-map-preview{height:100px;border-radius:7px;background:var(--dark2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.map-placeholder{color:var(--text3);font-size:12px;text-align:center}
+
+/* ── SAVE BAR ── */
+.save-bar{display:flex;gap:10px;padding:14px 16px;background:var(--dark2);border-top:1px solid var(--border);flex-shrink:0}
+.btn-save{flex:1;background:var(--gold);color:#000;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
+.btn-save:hover{background:var(--gold2)}
+.btn-clear{background:var(--dark3);color:var(--text2);border:1px solid var(--border);border-radius:8px;padding:11px 16px;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s ease;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--red)}
+
+/* ── MOBILE TOGGLE ── */
+.menu-btn{display:none;background:none;border:none;color:var(--text);padding:6px;cursor:pointer}
+@media(max-width:700px){.menu-btn{display:flex;align-items:center;justify-content:center}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <img src="data:image/png;base64,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" alt="TadevaGAP">
+      <span>TadevaGAP <small>2026/27</small></span>
+    </div>
+    <div style="font-size:11px;color:var(--text3)" id="saveStatus"></div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-search">
+        <input type="text" class="search-input" placeholder="Buscar productor..." id="searchInput" oninput="renderSidebar(this.value)">
+      </div>
+      <div class="producer-list" id="producerList"></div>
+    </aside>
+
+    <div class="main" id="mainArea">
+      <div class="stage-tabs" id="stageTabs" style="display:none">
+        <div class="stage-tab" onclick="switchStage(0)">🌱 Almácigo</div>
+        <div class="stage-tab" onclick="switchStage(1)">🌿 Plantación</div>
+        <div class="stage-tab" onclick="switchStage(2)">🍃 Cultivo</div>
+        <div class="stage-tab" onclick="switchStage(3)">🚜 Cosecha</div>
+        <div class="stage-tab" onclick="switchStage(4)">📦 Clasificado</div>
+      </div>
+      <div class="form-area" id="formArea">
+        <div class="empty-state">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3>Seleccioná un productor</h3>
+          <p>Elegí un productor de la lista para registrar los datos GAP</p>
+        </div>
+      </div>
+      <div class="save-bar" id="saveBarEl" style="display:none">
+        <button class="btn-clear" onclick="clearForm()">Limpiar</button>
+        <button class="btn-save" onclick="saveForm()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">Guardado</span>
+</div>
+
+<script>
+// ============================================================
+//  CONSTANTES
+// ============================================================
+const ALMACIGO_TIPOS = ['Convencional','Flotante','Bandejas apoyadas','Bandejas apoyadas en pelo de agua'];
+const SEMILLA_TIPOS  = ['Certificada','Propia','Comprada'];
+const SEMILLA_VARIEDADES = ['K394','K326','MB59','MB365','MB312','MB411','MB137'];
+const TRANSPLANTE_TIPOS  = ['Manual','Mecánico','Semi-mecánico'];
+const FUNGOSIS   = ['Mildiu','Botrytis','Pythium','Rhizoctonia','Fusarium','Otro'];
+const VIROSIS    = ['PVY','TMV','CMV','TSWV','Otro'];
+const BACTERIOSIS= ['Erwinia','Pseudomonas','Otro'];
+const PLAGAS     = ['Trips','Pulgones','Ácaros','Mosca blanca','Gusano','Otro'];
+const COSECHA_STATUS = ['Propietario','Arrendero'];
+const CLASIF_TIPOS   = ['Manual','Mecánica','Semi-mecánica'];
+
+// ============================================================
+//  STORAGE — CLAVE ÚNICA: "gap_data_2026"
+// ============================================================
+const STORAGE_KEY = 'gap_data_2026';
+
+function loadAllData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function saveAllData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+    updateSaveStatus();
+  } catch(e) { showToast('Error al guardar: almacenamiento lleno', true); }
+}
+
+function getData(cuit, stage) {
+  if (!allData[cuit]) allData[cuit] = {};
+  const stageKey = ['almacigo','plantacion','cultivo','cosecha','clasificado'][stage];
+  if (!allData[cuit][stageKey]) allData[cuit][stageKey] = {};
+  return allData[cuit][stageKey];
+}
+
+function updateSaveStatus() {
+  const keys = Object.keys(allData);
+  const filled = keys.filter(k => Object.keys(allData[k]).some(s => {
+    const d = allData[k][s];
+    return d && Object.values(d).some(v => v && String(v).trim() !== '');
+  }));
+  document.getElementById('saveStatus').textContent =
+    filled.length ? `${filled.length} productores con datos` : '';
+}
+
+// Estado global
+let allData = loadAllData();
+let currentProducer = null;
+let currentStage = 0;
+
+// ============================================================
+//  PRODUCTORES
+// ============================================================
+const PRODUCERS = [{"cuit": "20140397386", "origen": "Jujuy", "productor": "ABUD, MIGUEL ENRIQUE", "sup": "81.0907", "cupo": "40000"}, {"cuit": "30712527559", "origen": "Jujuy", "productor": "AGRO SERVICIOS DON RAUL SRL", "sup": "30.4846", "cupo": "40000"}, {"cuit": "20047022186", "origen": "Jujuy", "productor": "AGUIAR, JORGE ALFREDO", "sup": "11.8704", "cupo": "4000"}, {"cuit": "20271104627", "origen": "Jujuy", "productor": "AGUIAR, JUAN MATEO", "sup": "11.8704", "cupo": "4000"}, {"cuit": "27289751780", "origen": "Jujuy", "productor": "ALMAZAN, CINTIA BEATRIZ", "sup": "24.6147", "cupo": "30000"}, {"cuit": "20332567951", "origen": "Jujuy", "productor": "RUIZ, RAUL RICARDO", "sup": "8.3578", "cupo": "5000"}, {"cuit": "27417871204", "origen": "Jujuy", "productor": "ALMAZAN, LEILA LORENA", "sup": "23.9769", "cupo": "12000"}, {"cuit": "20340224168", "origen": "Jujuy", "productor": "ALMAZAN, YAMIL ITALO EMANUEL", "sup": "10.044", "cupo": ""}, {"cuit": "20342144412", "origen": "Jujuy", "productor": "ANACHURI, CRISTIAN SEBASTIAN", "sup": "1.209", "cupo": "1000"}, {"cuit": "20082003852", "origen": "Jujuy", "productor": "ANACHURI, JOSE SANTOS", "sup": "3.4194", "cupo": "1000"}, {"cuit": "20340250703", "origen": "Jujuy", "productor": "APARICIO, FABIAN ANDRES", "sup": "14.610199999999999", "cupo": ""}, {"cuit": "20358374450", "origen": "Jujuy", "productor": "APARICIO, PAOLO SABINO", "sup": "5.952", "cupo": "10000"}, {"cuit": "20358236643", "origen": "Jujuy", "productor": "APARICIO, RODOLFO NICOLAS", "sup": "4.9355", "cupo": ""}, {"cuit": "20292958340", "origen": "Jujuy", "productor": "ARAMAYO GARNICA, FRANCO YAEL", "sup": "1.7671", "cupo": ""}, {"cuit": "20340250371", "origen": "Jujuy", "productor": "ARAMAYO GARNICA, MAX ALEXANDER", "sup": "1.7671", "cupo": "2000"}, {"cuit": "27414085984", "origen": "Jujuy", "productor": "ARAMAYO, IRINA MAGALI", "sup": "10.1907", "cupo": ""}, {"cuit": "27245127206", "origen": "Jujuy", "productor": "ARROYO, OLGA  ESTER", "sup": "3.0903", "cupo": "5000"}, {"cuit": "24359110754", "origen": "Jujuy", "productor": "BARTOLETTI ATILIO ANGEL", "sup": "45.292500000000004", "cupo": ""}, {"cuit": "27322503895", "origen": "Jujuy", "productor": "BARTOLETTI, MARIA SOLEDAD", "sup": "31.8393", "cupo": ""}, {"cuit": "27368927827", "origen": "Jujuy", "productor": "BARTOLINI,  MARIA TATIANA", "sup": "21.5343", "cupo": ""}, {"cuit": "20188341498", "origen": "Jujuy", "productor": "BASPINEIRO, DIEGO ARMANDO", "sup": "5.6707", "cupo": "3000"}, {"cuit": "20341838224", "origen": "Jujuy", "productor": "BASPINEIRO, HECTOR RUBEN", "sup": "2.8201", "cupo": "3000"}, {"cuit": "20341838186", "origen": "Jujuy", "productor": "BASPINEIRO, HUGO JAVIER", "sup": "4.7933", "cupo": "3000"}, {"cuit": "20416795127", "origen": "Jujuy", "productor": "BASPINEIRO, LEONEL FABIAN", "sup": "5.0942", "cupo": "3000"}, {"cuit": "30716634473", "origen": "Jujuy", "productor": "BATABAC S.R.L.", "sup": "28.0558", "cupo": "20000"}, {"cuit": "20359110945", "origen": "Jujuy", "productor": "BATALLANOS,  JUAN OMAR", "sup": "35.8174", "cupo": "30000"}, {"cuit": "20124749256", "origen": "Jujuy", "productor": "BATALLANOS, JUAN TEOFILO", "sup": "11.2711", "cupo": ""}, {"cuit": "30712371230", "origen": "Jujuy", "productor": "TABACO BATALLANOS SRL", "sup": "30.3016", "cupo": ""}, {"cuit": "20227634392", "origen": "Jujuy", "productor": "BATALLANOS, LUIS ALBERTO", "sup": "17.6684", "cupo": "20000"}, {"cuit": "20379203125", "origen": "Jujuy", "productor": "BATALLANOS, MATIAS ALBERTO", "sup": "15.2695", "cupo": "18000"}, {"cuit": "23401760644", "origen": "Jujuy", "productor": "BATALLANOS, PAULA  ARACELI", "sup": "33.1107", "cupo": "10000"}, {"cuit": "20351644282", "origen": "Jujuy", "productor": "BEGZADEH, JOSE ALBERTO", "sup": "8.2195", "cupo": "3000"}, {"cuit": "23215780759", "origen": "Jujuy", "productor": "BERRUEZO, GERARDO RAUL", "sup": "19.9499", "cupo": ""}, {"cuit": "30711616795", "origen": "Jujuy", "productor": "LOS ANGELES S.R.L.", "sup": "30.0172", "cupo": "8000"}, {"cuit": "20324289586", "origen": "Jujuy", "productor": "BOVEDA, GABRIEL ANTONIO", "sup": "", "cupo": "1000"}, {"cuit": "27162577560", "origen": "Jujuy", "productor": "BURGOS IRIARTE, ANA BEATRIZ DEL VALLE", "sup": "", "cupo": ""}, {"cuit": "27166376411", "origen": "Jujuy", "productor": "CAMACHO, FELISA DOLORES", "sup": "23.3671", "cupo": "20000"}, {"cuit": "23335603044", "origen": "Jujuy", "productor": "SUAREZ, MARIA NOELIA", "sup": "6.7244", "cupo": "5000"}, {"cuit": "23317777124", "origen": "Jujuy", "productor": "TACACHO, NOELIA BRENDA", "sup": "14.4973", "cupo": "12000"}, {"cuit": "20237782012", "origen": "Jujuy", "productor": "CANCHI, ARIEL RICARDO", "sup": "3.2708", "cupo": "10000"}, {"cuit": "20398081774", "origen": "Jujuy", "productor": "CANCHI, LEANDRO GASTON", "sup": "1.0903", "cupo": ""}, {"cuit": "20944529129", "origen": "Jujuy", "productor": "CARDENAS  TRUJILLO, SAMUEL", "sup": "8.6139", "cupo": ""}, {"cuit": "20332547624", "origen": "Jujuy", "productor": "CARDOZO, ELIAN ISRAEL", "sup": "11.3852", "cupo": ""}, {"cuit": "27298433201", "origen": "Jujuy", "productor": "CARDOZO, ANALIA SOLEDAD", "sup": "3.3767", "cupo": "2000"}, {"cuit": "20376327540", "origen": "Jujuy", "productor": "CARDOZO, EZEQUIEL FEDERICO", "sup": "4.9271", "cupo": ""}, {"cuit": "20144426089", "origen": "Jujuy", "productor": "CARDOZO, PEDRO EMILIO", "sup": "22.8877", "cupo": ""}, {"cuit": "20272320579", "origen": "Jujuy", "productor": "CASASCO CALIARI, SEBASTIAN ALEJANDRO", "sup": "33.1812", "cupo": ""}, {"cuit": "20376452701", "origen": "Jujuy", "productor": "CAZON DIEGO JOSE", "sup": "7.9778", "cupo": "6000"}, {"cuit": "23286778739", "origen": "Jujuy", "productor": "CAZON ELIO GUSTAVO", "sup": "4.0613", "cupo": "5000"}, {"cuit": "20937105763", "origen": "Jujuy", "productor": "CAZON CARDOZO, OSCAR", "sup": "4.4028", "cupo": "5000"}, {"cuit": "20419854566", "origen": "Jujuy", "productor": "CAZON, ANGELO FELIPE", "sup": "", "cupo": ""}, {"cuit": "20166651221", "origen": "Jujuy", "productor": "CAZON, ANIBAL FELIPE", "sup": "", "cupo": "1000"}, {"cuit": "20353097629", "origen": "Jujuy", "productor": "CAZON, JAIRO EMMANUEL", "sup": "", "cupo": ""}, {"cuit": "20942755466", "origen": "Jujuy", "productor": "CAZZON, PEDRO", "sup": "14.1317", "cupo": "6000"}, {"cuit": "20234302966", "origen": "Jujuy", "productor": "CAZZON, VICTOR OMAR", "sup": "", "cupo": ""}, {"cuit": "20324525859", "origen": "Jujuy", "productor": "SANCHEZ, PEDRO PABLO", "sup": "3.3346", "cupo": "3000"}, {"cuit": "20178653149", "origen": "Jujuy", "productor": "CHAMBI, CARLOS", "sup": "15.2332", "cupo": "12000"}, {"cuit": "23341980119", "origen": "Jujuy", "productor": "CHAMBI, CARLOS JAVIER", "sup": "15.680700000000002", "cupo": "15000"}, {"cuit": "27365512286", "origen": "Jujuy", "productor": "CHAMBI, IVANA GRISELDA", "sup": "14.9877", "cupo": "2000"}, {"cuit": "20224459387", "origen": "Jujuy", "productor": "CHAMBI, ROGELIO CIPRIANO", "sup": "8.6045", "cupo": ""}, {"cuit": "27443498902", "origen": "Jujuy", "productor": "CHAMVY, ROSARIO LEONOR", "sup": "2.5749", "cupo": "12000"}, {"cuit": "20362825718", "origen": "Jujuy", "productor": "CHAMBI, SERGIO AGUSTIN", "sup": "9.0698", "cupo": "8000"}, {"cuit": "20278441009", "origen": "Jujuy", "productor": "CHAMVY, ESTEBAN FERNANDO", "sup": "13.5182", "cupo": "12000"}, {"cuit": "27945136915", "origen": "Jujuy", "productor": "CHIRI CASTILLO, ADRIANA", "sup": "14.833499999999999", "cupo": ""}, {"cuit": "20375081696", "origen": "Jujuy", "productor": "CHOQUE BATALLANOS, LEANDRO PAOLO", "sup": "10.0607", "cupo": "10000"}, {"cuit": "20101333834", "origen": "Jujuy", "productor": "COFRANCESCO, FERNANDO AUGUSTO", "sup": "22.3327", "cupo": ""}, {"cuit": "23953784599", "origen": "Jujuy", "productor": "CORMA MARTINEZ, ROBERTO", "sup": "11.2938", "cupo": ""}, {"cuit": "20245112565", "origen": "Jujuy", "productor": "CORTES, HECTOR RAUL", "sup": "11.9226", "cupo": ""}, {"cuit": "20289453572", "origen": "Jujuy", "productor": "CORTES, RENE ALBERTO", "sup": "11.9312", "cupo": "8000"}, {"cuit": "27320578154", "origen": "Jujuy", "productor": "CRUZ SALGADO, LUCIANA GISELA", "sup": "3.5461", "cupo": ""}, {"cuit": "20107637258", "origen": "Jujuy", "productor": "DAVID, JOSE ALBERTO", "sup": "", "cupo": ""}, {"cuit": "20152750693", "origen": "Jujuy", "productor": "DAWIDOWICZ, TADEO ANTONIO", "sup": "1.0335", "cupo": "220000"}, {"cuit": "20174024007", "origen": "Jujuy", "productor": "DE TEZANOS PINTO, GUSTAVO CARLOS", "sup": "77.3893", "cupo": "50000"}, {"cuit": "20186122136", "origen": "Jujuy", "productor": "DETERLINO, ANTONIO", "sup": "10.5548", "cupo": "3000"}, {"cuit": "20401760386", "origen": "Jujuy", "productor": "DETERLINO, JORGE ALBERTO", "sup": "8.5998", "cupo": "3000"}, {"cuit": "20347259412", "origen": "Jujuy", "productor": "DETERLINO, DIEGO JAVIER", "sup": "8.8245", "cupo": ""}, {"cuit": "27178407061", "origen": "Jujuy", "productor": "DIAZ, HILDA LILIANA", "sup": "56.7381", "cupo": "30000"}, {"cuit": "20289753266", "origen": "Jujuy", "productor": "DOLSAN, VICTORIO DARIO", "sup": "", "cupo": ""}, {"cuit": "30715008463", "origen": "Jujuy", "productor": "FINCA DON ARMANDO S.R.L.", "sup": "19.6432", "cupo": ""}, {"cuit": "20313673031", "origen": "Jujuy", "productor": "FACHINI, ENZO LEONARDO", "sup": "38.6", "cupo": "8000"}, {"cuit": "20298434831", "origen": "Jujuy", "productor": "FACHINI, FRANCO RUBEN", "sup": "14.4109", "cupo": ""}, {"cuit": "20371047329", "origen": "Jujuy", "productor": "FACHINI, MARCIO LEANDRO", "sup": "21.4998", "cupo": ""}, {"cuit": "20146379967", "origen": "Jujuy", "productor": "FACHINI, RUBEN RAMON", "sup": "59.4387", "cupo": ""}, {"cuit": "27163646205", "origen": "Jujuy", "productor": "GELMETTI, MIRIAM ESTER", "sup": "16.067", "cupo": ""}, {"cuit": "30714121096", "origen": "Jujuy", "productor": "PESCANTINA SRL", "sup": "25.742800000000003", "cupo": "12000"}, {"cuit": "20350228404", "origen": "Jujuy", "productor": "FARFAN, ABEL LEONARDO GASTON", "sup": "11.0049", "cupo": "18000"}, {"cuit": "27284966568", "origen": "Jujuy", "productor": "FARFAN, ELIZABETH CARINA", "sup": "40.719699999999996", "cupo": "60000"}, {"cuit": "20233825922", "origen": "Jujuy", "productor": "FARFAN, NELSON FERNANDO", "sup": "41.396699999999996", "cupo": "100000"}, {"cuit": "27264181416", "origen": "Jujuy", "productor": "VEGA, MARIA DEL PILAR", "sup": "11.0182", "cupo": "8000"}, {"cuit": "27267935594", "origen": "Jujuy", "productor": "FERNANDEZ, CLAUDIA  SILVINA", "sup": "5.2771", "cupo": "8000"}, {"cuit": "20120556151", "origen": "Jujuy", "productor": "FLORES, CARLOS HUMBERTO", "sup": "24.243000000000002", "cupo": "50000"}, {"cuit": "20108782235", "origen": "Jujuy", "productor": "FLORES, RUBEN", "sup": "26.035500000000003", "cupo": "50000"}, {"cuit": "27239463466", "origen": "Jujuy", "productor": "FLORES, MONICA SILVINA", "sup": "4.522", "cupo": "4000"}, {"cuit": "20384080570", "origen": "Jujuy", "productor": "FLORES, SERGIO DANIEL", "sup": "13.7851", "cupo": "10000"}, {"cuit": "27358237512", "origen": "Jujuy", "productor": "FLORES, VANESA ABIGAIL", "sup": "8.9736", "cupo": "4000"}, {"cuit": "20929151780", "origen": "Jujuy", "productor": "GARNICA MENECES AGAPITO", "sup": "4.5329", "cupo": "4000"}, {"cuit": "20299427294", "origen": "Jujuy", "productor": "GARNICA, ALEJANDRO AGAPITO", "sup": "1.8529", "cupo": ""}, {"cuit": "20313981097", "origen": "Jujuy", "productor": "GARNICA, PABLO EDGARDO", "sup": "1.8529", "cupo": ""}, {"cuit": "20322104864", "origen": "Jujuy", "productor": "GARZON, CRISTIAN MARIANO", "sup": "5.0657", "cupo": "8000"}, {"cuit": "20339256544", "origen": "Jujuy", "productor": "GARZON, ENZO SEBASTIAN", "sup": "5.3755", "cupo": "8000"}, {"cuit": "20166651124", "origen": "Jujuy", "productor": "GARZON, JULIO CESAR", "sup": "3.8218", "cupo": "12000"}, {"cuit": "27142957871", "origen": "Jujuy", "productor": "GARNICA, MARIA ISABEL", "sup": "11.232000000000001", "cupo": "12000"}, {"cuit": "20180629441", "origen": "Jujuy", "productor": "GASPARRI, RAMON OMAR", "sup": "", "cupo": ""}, {"cuit": "23120181289", "origen": "Jujuy", "productor": "GELMETTI, ANGEL DARDO", "sup": "36.7905", "cupo": "90000"}, {"cuit": "20384080759", "origen": "Jujuy", "productor": "GELMETTI, ANGEL GIULIANO", "sup": "4.0861", "cupo": "10000"}, {"cuit": "23389746789", "origen": "Jujuy", "productor": "GELMETTI, DARDO FABRIZIO", "sup": "6.9145", "cupo": "10000"}, {"cuit": "20124423377", "origen": "Jujuy", "productor": "GELMETTI, GERARDO LUIS", "sup": "11.5577", "cupo": "4000"}, {"cuit": "20379202919", "origen": "Jujuy", "productor": "GONZALEZ, CRISTIAN MAURICIO", "sup": "8.6812", "cupo": "2000"}, {"cuit": "20253773201", "origen": "Jujuy", "productor": "GUASTELLA, HERNAN GABRIEL", "sup": "1.9532", "cupo": ""}, {"cuit": "20146379355", "origen": "Jujuy", "productor": "GUEBARA, EMILIO ROBERTO", "sup": "14.784600000000001", "cupo": "15000"}, {"cuit": "27332531889", "origen": "Jujuy", "productor": "GUEBARA, ROMINA PAOLA", "sup": "6.673", "cupo": "5000"}, {"cuit": "20338445394", "origen": "Jujuy", "productor": "GUEBARA, LUIS ALFREDO", "sup": "8.4093", "cupo": "10000"}, {"cuit": "27317776123", "origen": "Jujuy", "productor": "GUEBARA, INES VERONICA", "sup": "34.888799999999996", "cupo": "12000"}, {"cuit": "23399293499", "origen": "Jujuy", "productor": "GONZALEZ, JUAN CARLOS", "sup": "12.5148", "cupo": "12000"}, {"cuit": "20144509456", "origen": "Jujuy", "productor": "GUEBARA, JUAN ALBERTO", "sup": "14.1935", "cupo": ""}, {"cuit": "20277881560", "origen": "Jujuy", "productor": "GUEBARA, JUAN JOSE", "sup": "10.7802", "cupo": ""}, {"cuit": "27472415447", "origen": "Jujuy", "productor": "GUEBARA ANZE, ABRIL AYLEN", "sup": "5.3992", "cupo": "12000"}, {"cuit": "20201032572", "origen": "Jujuy", "productor": "GUEBARA, MOISES NESTOR", "sup": "49.6038", "cupo": "50000"}, {"cuit": "20376327435", "origen": "Jujuy", "productor": "GUEBARA, ALVARO DANIEL", "sup": "40.1986", "cupo": "50000"}, {"cuit": "23332530984", "origen": "Jujuy", "productor": "CARDOZO, TATIANA ELIZABETH", "sup": "14.2388", "cupo": "5000"}, {"cuit": "20274818329", "origen": "Jujuy", "productor": "GUEVARA, ALBERTO GABRIEL", "sup": "14.9618", "cupo": "6000"}, {"cuit": "20389752976", "origen": "Jujuy", "productor": "GUEVARA, CRISTIAN SIMON", "sup": "6.3501", "cupo": "3000"}, {"cuit": "23301298404", "origen": "Jujuy", "productor": "GUEVARA, EDELMIRA NANCY", "sup": "5.9466", "cupo": "2000"}, {"cuit": "20935240493", "origen": "Jujuy", "productor": "GUEVARA MIRANDA, SIMON", "sup": "50.57359999999999", "cupo": "15000"}, {"cuit": "20229722493", "origen": "Jujuy", "productor": "GUEVARA, RENE MARCELO", "sup": "23.8547", "cupo": "3000"}, {"cuit": "23286778879", "origen": "Jujuy", "productor": "GUEVARA, ROBERTO CARLOS", "sup": "14.26", "cupo": "2000"}, {"cuit": "27171534963", "origen": "Jujuy", "productor": "GUEVARA,  ANGELICA", "sup": "19.268", "cupo": ""}, {"cuit": "20221866593", "origen": "Jujuy", "productor": "GUEVARA, FELIX ARMANDO", "sup": "21.0477", "cupo": "5000"}, {"cuit": "27166376314", "origen": "Jujuy", "productor": "GUEVARA, MARIA LUISA", "sup": "17.132399999999997", "cupo": ""}, {"cuit": "20180629298", "origen": "Jujuy", "productor": "HUALLPA, ELEODORO", "sup": "121.77949999999998", "cupo": "30000"}, {"cuit": "20108580772", "origen": "Jujuy", "productor": "HUANCA, JUAN HORACIO", "sup": "11.978200000000001", "cupo": "5000"}, {"cuit": "20922363642", "origen": "Jujuy", "productor": "IPORRE CAZON, BRAULIO", "sup": "11.777", "cupo": "20000"}, {"cuit": "27284048488", "origen": "Jujuy", "productor": "IPORRE, CAROLINA LEONOR", "sup": "8.4717", "cupo": "10000"}, {"cuit": "20275646114", "origen": "Jujuy", "productor": "IPORRE, JORGE LUIS", "sup": "14.7723", "cupo": "25000"}, {"cuit": "27295464688", "origen": "Jujuy", "productor": "IPORRE, SOLEDAD GRACIELA", "sup": "5.4453", "cupo": "5000"}, {"cuit": "20322587342", "origen": "Jujuy", "productor": "IPORRE, VICTOR EMANUEL", "sup": "11.398100000000001", "cupo": "15000"}, {"cuit": "20244233091", "origen": "Jujuy", "productor": "LARA, DIEGO SEBASTIAN", "sup": "16.0002", "cupo": "5000"}, {"cuit": "20072854862", "origen": "Jujuy", "productor": "LARA, EDUARDO", "sup": "0.7247", "cupo": ""}, {"cuit": "20447545943", "origen": "Jujuy", "productor": "LARRAUX, HELIO JORGE", "sup": "", "cupo": ""}, {"cuit": "20229852419", "origen": "Jujuy", "productor": "LLANOS, ESTEBAN", "sup": "8.0621", "cupo": ""}, {"cuit": "27272509633", "origen": "Jujuy", "productor": "CERDA, VALERIA KARINA ALEJANDRA", "sup": "5.559", "cupo": "3000"}, {"cuit": "27229722129", "origen": "Jujuy", "productor": "LOPEZ, ALICIA", "sup": "5.4471", "cupo": "8000"}, {"cuit": "20256135370", "origen": "Jujuy", "productor": "LOPEZ, LUIS NICOLAS", "sup": "20.280700000000003", "cupo": "10000"}, {"cuit": "20308019285", "origen": "Jujuy", "productor": "LOPEZ, EDUARDO RODRIGO", "sup": "12.0873", "cupo": ""}, {"cuit": "27120073899", "origen": "Jujuy", "productor": "VACA, BLANCA GRACIELA", "sup": "42.9087", "cupo": "10000"}, {"cuit": "20332528581", "origen": "Jujuy", "productor": "LOPEZ,  SERGIO DANIEL", "sup": "5.834", "cupo": "2000"}, {"cuit": "27166822519", "origen": "Jujuy", "productor": "GONZALEZ, NANCI NOEMI DEL CARMEN", "sup": "", "cupo": "2000"}, {"cuit": "27369099022", "origen": "Jujuy", "productor": "LOZA, NAHIR JUDITH DEL VALLE", "sup": "", "cupo": "2000"}, {"cuit": "27232415954", "origen": "Jujuy", "productor": "LOZA, SANDRA NOEMI", "sup": "", "cupo": "2000"}, {"cuit": "20420727098", "origen": "Jujuy", "productor": "LOZA, FRANCO DANIEL", "sup": "12.8718", "cupo": "2000"}, {"cuit": "20358236759", "origen": "Jujuy", "productor": "MAMANI, DARIO BENJAMIN", "sup": "7.2854", "cupo": "6000"}, {"cuit": "20365514055", "origen": "Jujuy", "productor": "MANCINI, GINO GIOVANNI", "sup": "10.0091", "cupo": "10000"}, {"cuit": "20321087834", "origen": "Jujuy", "productor": "MANCINI, GIUSEPPE", "sup": "10.0091", "cupo": ""}, {"cuit": "20143128017", "origen": "Jujuy", "productor": "MANCINI, JOSE SEGUNDO", "sup": "88.5051", "cupo": "30000"}, {"cuit": "20117815863", "origen": "Jujuy", "productor": "MARAS, ADOLFO", "sup": "33.7482", "cupo": "25000"}, {"cuit": "30716956535", "origen": "Jujuy", "productor": "L Y G  S.R.L.", "sup": "10.2142", "cupo": "15000"}, {"cuit": "27293203089", "origen": "Jujuy", "productor": "MARAZ, GRISELDA BENIGNA", "sup": "22.6537", "cupo": "40000"}, {"cuit": "20464712268", "origen": "Jujuy", "productor": "CARDOZO MARAZ, NAZARENO FARID", "sup": "5.8589", "cupo": ""}, {"cuit": "20340226233", "origen": "Jujuy", "productor": "MARCUZZI, FABRICIO ANTONIO", "sup": "33.3909", "cupo": "20000"}, {"cuit": "27325696201", "origen": "Jujuy", "productor": "MARCUZZI, ROSA EMILIA", "sup": "2.146", "cupo": ""}, {"cuit": "20253772728", "origen": "Jujuy", "productor": "MARQUEZ, ROBERTO SEBASTIAN", "sup": "1", "cupo": "10000"}, {"cuit": "20146824731", "origen": "Jujuy", "productor": "MEALLA, RICARDO", "sup": "6.0114", "cupo": ""}, {"cuit": "27248604986", "origen": "Jujuy", "productor": "MENDOZA, JUAN MARCELO", "sup": "1.9089", "cupo": "1000"}, {"cuit": "20940920885", "origen": "Jujuy", "productor": "MOLINA PADILLA FAUSTINO", "sup": "11.4918", "cupo": "4000"}, {"cuit": "20433529619", "origen": "Jujuy", "productor": "MOLINA, JORGE FAUSTINO", "sup": "3.7715", "cupo": ""}, {"cuit": "20301103523", "origen": "Jujuy", "productor": "MOLINA CALDERON, OSCAR HUGO", "sup": "12.2479", "cupo": "5000"}, {"cuit": "20332527895", "origen": "Jujuy", "productor": "MOLINA VILLA, ALFREDO LUIS", "sup": "13.7994", "cupo": "10000"}, {"cuit": "20308018394", "origen": "Jujuy", "productor": "MOLINA, JOSE ALBERTO", "sup": "7.1834", "cupo": "5000"}, {"cuit": "20930388468", "origen": "Jujuy", "productor": "MOLINA MARTINEZ, ASENCIO", "sup": "14.555", "cupo": "4000"}, {"cuit": "27190609451", "origen": "Jujuy", "productor": "MOLINA MARTINEZ, SEGUNDINA", "sup": "8.7773", "cupo": "2000"}, {"cuit": "20307313007", "origen": "Jujuy", "productor": "MONALDI, JUAN CARLOS MARTIN", "sup": "32.3241", "cupo": "30000"}, {"cuit": "20111604593", "origen": "Jujuy", "productor": "MONALDI, JUAN CARLOS", "sup": "4.4583", "cupo": "10000"}, {"cuit": "24233921579", "origen": "Jujuy", "productor": "MONTERO, CARLOS ROBERTO", "sup": "10.8368", "cupo": ""}, {"cuit": "20365512516", "origen": "Jujuy", "productor": "MOYA FERNANDEZ, MIGUEL ANTONIO", "sup": "", "cupo": ""}, {"cuit": "20135142302", "origen": "Jujuy", "productor": "MOYA MORALES, MIGUEL ANGEL", "sup": "19.7756", "cupo": "20000"}, {"cuit": "20308018173", "origen": "Jujuy", "productor": "ABRAHAM, VICTOR MANUEL", "sup": "3", "cupo": ""}, {"cuit": "30710516584", "origen": "Jujuy", "productor": "N.E.N. S.R.L.", "sup": "", "cupo": "20000"}, {"cuit": "23337577539", "origen": "Jujuy", "productor": "ORTIZ, RODRIGO ANTONIO", "sup": "8.6896", "cupo": "20000"}, {"cuit": "23178653024", "origen": "Jujuy", "productor": "MAIZARES FARFAN, MARTHA MARGARITA", "sup": "5.7745999999999995", "cupo": "2000"}, {"cuit": "20127687618", "origen": "Jujuy", "productor": "SUC. DE ORTIZ GOMEZ, ANTONIO ANGEL", "sup": "5.7847", "cupo": "2000"}, {"cuit": "20358235159", "origen": "Jujuy", "productor": "OVANDO, ALFREDO RUBEN", "sup": "12.1883", "cupo": "4000"}, {"cuit": "20375081556", "origen": "Jujuy", "productor": "OVANDO, DANIEL PABLO", "sup": "12.6781", "cupo": "4000"}, {"cuit": "20297173783", "origen": "Jujuy", "productor": "OVANDO, HECTOR  CESAR", "sup": "14.1352", "cupo": "4000"}, {"cuit": "23418452714", "origen": "Jujuy", "productor": "PARI, PAULA NAZARENA", "sup": "5.3071", "cupo": "2000"}, {"cuit": "20332528271", "origen": "Jujuy", "productor": "PORTAL, DAN JAIRO", "sup": "13.0572", "cupo": "12000"}, {"cuit": "27359110095", "origen": "Jujuy", "productor": "PORTAL, FLORENCIA JAQUELINA", "sup": "9.0105", "cupo": "20000"}, {"cuit": "20357800065", "origen": "Jujuy", "productor": "RAMOS, ANDRES", "sup": "9.888", "cupo": "10000"}, {"cuit": "20140225879", "origen": "Jujuy", "productor": "RAMOS, FRANCISCO", "sup": "", "cupo": ""}, {"cuit": "20414013482", "origen": "Jujuy", "productor": "RAMOS FRIAS, JOAQUIN FRANCISCO", "sup": "3.7481", "cupo": "2000"}, {"cuit": "27429545612", "origen": "Jujuy", "productor": "RAMOS FRIAS, KAREN ELIZABETH", "sup": "", "cupo": ""}, {"cuit": "20324695444", "origen": "Jujuy", "productor": "RAMOS, MIGUEL ANGEL", "sup": "13.4629", "cupo": "12000"}, {"cuit": "20332529502", "origen": "Jujuy", "productor": "RIVERA, NORBERTO GONZALO", "sup": "23.977800000000002", "cupo": "25000"}, {"cuit": "20286778594", "origen": "Jujuy", "productor": "RIVERA, CRISTIAN", "sup": "8.1706", "cupo": "5000"}, {"cuit": "20121565804", "origen": "Jujuy", "productor": "RIVERA, JESUS", "sup": "6.7334000000000005", "cupo": ""}, {"cuit": "20108057794", "origen": "Jujuy", "productor": "RIVERO, LUIS ALBERTO", "sup": "", "cupo": "3000"}, {"cuit": "20120672542", "origen": "Jujuy", "productor": "RIVERO, RAFAEL HUMBERTO", "sup": "24.5774", "cupo": ""}, {"cuit": "23428579429", "origen": "Jujuy", "productor": "RIVERO, HUMBERTO NICOLAS ANTONIO", "sup": "15.2434", "cupo": "5000"}, {"cuit": "20465969009", "origen": "Jujuy", "productor": "RIVERO, RAFAEL HORACIO", "sup": "4.2879", "cupo": ""}, {"cuit": "20260437993", "origen": "Jujuy", "productor": "RODRIGUEZ, OSCAR RUBEN", "sup": "32.0179", "cupo": "4000"}, {"cuit": "23140396729", "origen": "Jujuy", "productor": "RODRIGUEZ, ROLANDO HORACIO", "sup": "31.952", "cupo": ""}, {"cuit": "23346346469", "origen": "Jujuy", "productor": "ROMERO, NESTOR JAVIER", "sup": "4.7404", "cupo": "5000"}, {"cuit": "20297412990", "origen": "Jujuy", "productor": "ROMERO, JORGE ANTONIO", "sup": "", "cupo": ""}, {"cuit": "20322587784", "origen": "Jujuy", "productor": "RUIZ, EDUARDO FACUNDO", "sup": "3.4857", "cupo": ""}, {"cuit": "20353088905", "origen": "Jujuy", "productor": "RUIZ, JUAN MANUEL", "sup": "3.4857", "cupo": "1000"}, {"cuit": "20236434088", "origen": "Jujuy", "productor": "SAGARDIA, JULIO HECTOR", "sup": "17.9404", "cupo": "40000"}, {"cuit": "23340227719", "origen": "Jujuy", "productor": "SALAZAR, VICTOR HUGO", "sup": "33.7231", "cupo": "30000"}, {"cuit": "20082005561", "origen": "Jujuy", "productor": "SANCHO, SABINO", "sup": "", "cupo": ""}, {"cuit": "20283108032", "origen": "Jujuy", "productor": "SERAPIO, JOSE ANTONIO", "sup": "11.773", "cupo": ""}, {"cuit": "20294047345", "origen": "Jujuy", "productor": "SERAPIO, OMAR FRANCISCO", "sup": "14.173200000000001", "cupo": "5000"}, {"cuit": "27107637082", "origen": "Jujuy", "productor": "QUINTEROS, ANA MARIA", "sup": "17.805", "cupo": ""}, {"cuit": "27302462076", "origen": "Jujuy", "productor": "RUIZ, MARCELA ROSA", "sup": "8.1095", "cupo": "5000"}, {"cuit": "20120181212", "origen": "Jujuy", "productor": "SILES, JOSE ANTONIO (H)", "sup": "18.7841", "cupo": "20000"}, {"cuit": "20149572717", "origen": "Jujuy", "productor": "SILES, LUIS", "sup": "18.8291", "cupo": "20000"}, {"cuit": "27241014466", "origen": "Jujuy", "productor": "SOLANA, ADRIANA ROSA", "sup": "24.5015", "cupo": "20000"}, {"cuit": "23072829999", "origen": "Jujuy", "productor": "SUCESION DE HANSEN ERNESTO ALEJANDRO", "sup": "", "cupo": "10000"}, {"cuit": "27397397489", "origen": "Jujuy", "productor": "SOTO, MARIANA FERNANDA", "sup": "5.5331", "cupo": "1000"}, {"cuit": "23104718949", "origen": "Jujuy", "productor": "STRIZIC, JUAN CARLOS", "sup": "7.8718", "cupo": "2000"}, {"cuit": "20039951038", "origen": "Jujuy", "productor": "SUC. DE PASQUINI, MARCELO ANIBAL", "sup": "", "cupo": ""}, {"cuit": "20137294304", "origen": "Jujuy", "productor": "PASQUINI, MARCELO JORGE", "sup": "", "cupo": ""}, {"cuit": "20131211547", "origen": "Jujuy", "productor": "AGOSTINI, MIGUEL ANGEL", "sup": "1.9629", "cupo": ""}, {"cuit": "20078095114", "origen": "Jujuy", "productor": "SUCESION DE DOMINGUEZ LEONCIO", "sup": "10.428", "cupo": "12000"}, {"cuit": "20207067084", "origen": "Jujuy", "productor": "SUFI, MIGUEL ANGEL", "sup": "14.681899999999999", "cupo": "10000"}, {"cuit": "27286481898", "origen": "Jujuy", "productor": "TARIFA, MONICA ROSANA", "sup": "14.857099999999999", "cupo": "8000"}, {"cuit": "20204880019", "origen": "Jujuy", "productor": "CASTAÑO, ROBERTO ALEJANDRO", "sup": "2.7055", "cupo": ""}, {"cuit": "20171811008", "origen": "Jujuy", "productor": "TEJERINA, ADRIAN", "sup": "15.5264", "cupo": "35000"}, {"cuit": "20375087368", "origen": "Jujuy", "productor": "TEJERINA, FEDERICO ISMAEL", "sup": "18.7246", "cupo": ""}, {"cuit": "27227474780", "origen": "Jujuy", "productor": "HERNANDEZ, PERLA CAROLINA", "sup": "19.8423", "cupo": "5000"}, {"cuit": "20471238148", "origen": "Jujuy", "productor": "TEJERINA, FACUNDO CARLOS", "sup": "12.5981", "cupo": "5000"}, {"cuit": "23421512914", "origen": "Jujuy", "productor": "TORREJON, AYLEN DAIANA NAHIR", "sup": "4.3917", "cupo": "3000"}, {"cuit": "20178482530", "origen": "Jujuy", "productor": "TORREJON, RICARDO OSVALDO", "sup": "13.2342", "cupo": ""}, {"cuit": "20240853001", "origen": "Jujuy", "productor": "VELASQUEZ, ANTONINO FROILAN", "sup": "", "cupo": ""}, {"cuit": "23431397099", "origen": "Jujuy", "productor": "VELASQUEZ, MAXIMILIANO ARIEL", "sup": "1.9389", "cupo": "2000"}, {"cuit": "20143738885", "origen": "Jujuy", "productor": "VELAZQUEZ, ELGAR ROLANDO", "sup": "44.4143", "cupo": "15000"}, {"cuit": "20386565458", "origen": "Jujuy", "productor": "VELASQUEZ, MICHAEL IVAN", "sup": "25.0807", "cupo": ""}, {"cuit": "20325644924", "origen": "Jujuy", "productor": "VIDES, CRISTIAN ALFREDO", "sup": "", "cupo": "2000"}, {"cuit": "20137089859", "origen": "Jujuy", "productor": "VILLA, JOSE RAUL", "sup": "", "cupo": ""}, {"cuit": "20148118729", "origen": "Jujuy", "productor": "VILLA, JUAN CARLOS", "sup": "10.1796", "cupo": "12000"}, {"cuit": "27233347049", "origen": "Jujuy", "productor": "YAGUALCA, MONICA BEATRIZ", "sup": "10.8707", "cupo": "3000"}, {"cuit": "20239231447", "origen": "Jujuy", "productor": "YEVARA, VICTOR HUGO", "sup": "56.486599999999996", "cupo": "30000"}, {"cuit": "30712342753", "origen": "Salta", "productor": "AGERSAN SRL", "sup": "", "cupo": "3000"}, {"cuit": "30712336540", "origen": "Organico", "productor": "AGROPECUARIA JOSE MARIA S.R.L", "sup": "", "cupo": ""}, {"cuit": "23258848969", "origen": "Salta", "productor": "ALFARO VILLEGAS MANUEL", "sup": "", "cupo": ""}, {"cuit": "20941321195", "origen": "Salta", "productor": "APARICIO DIAZ SALOMON", "sup": "", "cupo": ""}, {"cuit": "20414450696", "origen": "Salta", "productor": "APAZA CARLOS LEONARDO", "sup": "", "cupo": ""}, {"cuit": "20434402736", "origen": "Salta", "productor": "ARIAS JOSE GABRIEL", "sup": "", "cupo": ""}, {"cuit": "20441757671", "origen": "Salta", "productor": "BAZAN JUAN RAMON", "sup": "", "cupo": ""}, {"cuit": "27226707293", "origen": "Salta", "productor": "BERRUEZO ESPINOSA BEATRIZ ADRIANA", "sup": "", "cupo": "8000"}, {"cuit": "27239599929", "origen": "Salta", "productor": "BERRUEZO KARINA ELIZABETH", "sup": "", "cupo": ""}, {"cuit": "23081660239", "origen": "Salta", "productor": "CAJAL ARTURO EDUARDO", "sup": "", "cupo": ""}, {"cuit": "20306621182", "origen": "Salta", "productor": "CAJAL EDUARDO GERONIMO", "sup": "", "cupo": ""}, {"cuit": "27047120808", "origen": "Organico", "productor": "CAPISANO MARIA ELENA", "sup": "", "cupo": "30000"}, {"cuit": "20371632299", "origen": "Salta", "productor": "CARDOZO CRISTIAN DAVID", "sup": "", "cupo": ""}, {"cuit": "20186817959", "origen": "Salta", "productor": "CARDOZO ESTEBAN", "sup": "", "cupo": "5000"}, {"cuit": "20432192211", "origen": "Salta", "productor": "CARDOZO ESTEBAN ZACARIAS", "sup": "", "cupo": "2000"}, {"cuit": "20407097247", "origen": "Salta", "productor": "CARDOZO JORGE ANIBAL", "sup": "", "cupo": "5000"}, {"cuit": "20283151272", "origen": "Salta", "productor": "CARDOZO JULIO CESAR", "sup": "", "cupo": ""}, {"cuit": "27144518786", "origen": "Salta", "productor": "CARRAL BENITA MARTHA", "sup": "", "cupo": ""}, {"cuit": "20400894281", "origen": "Salta", "productor": "CASTILLO MIGUEL ANGEL", "sup": "", "cupo": ""}, {"cuit": "23201258219", "origen": "Salta", "productor": "CAUSARANO ANGEL ANTONIO", "sup": "", "cupo": "1000"}, {"cuit": "20258929277", "origen": "Salta", "productor": "CAUSARANO JAVIER ALEJANDRO", "sup": "", "cupo": "8000"}, {"cuit": "20237210337", "origen": "Salta", "productor": "CAUSARANO MARCELO ABDON", "sup": "", "cupo": "7000"}, {"cuit": "20085558030", "origen": "Salta", "productor": "CAUSARANO MIGUEL ANGEL", "sup": "", "cupo": "5000"}, {"cuit": "20267139181", "origen": "Salta", "productor": "CAUSARANO PABLO DANIEL", "sup": "", "cupo": ""}, {"cuit": "27268904757", "origen": "Salta", "productor": "CEJAS LAURA MARIANA", "sup": "", "cupo": ""}, {"cuit": "20929650760", "origen": "Salta", "productor": "CHACON CEJAS EDWIN", "sup": "", "cupo": "4000"}, {"cuit": "20143911595", "origen": "Salta", "productor": "CHAUQUE SAMUEL DAVID", "sup": "", "cupo": ""}, {"cuit": "20369346157", "origen": "Salta", "productor": "CHAVEZ RAUL EDUARDO", "sup": "", "cupo": ""}, {"cuit": "30710732392", "origen": "Salta", "productor": "CHULO S.R.L.", "sup": "", "cupo": ""}, {"cuit": "27140657854", "origen": "Salta", "productor": "COLQUE CARMEN ROSA", "sup": "", "cupo": ""}, {"cuit": "20366547151", "origen": "Salta", "productor": "COLQUE DELFOR ALEJANDRO", "sup": "", "cupo": "8000"}, {"cuit": "20432201369", "origen": "Salta", "productor": "COLQUE JORGE FACUNDO", "sup": "", "cupo": "3000"}, {"cuit": "27128430208", "origen": "Salta", "productor": "CRUZ ELENA DEL VALLE", "sup": "", "cupo": ""}, {"cuit": "20920531726", "origen": "Salta", "productor": "CRUZ GARCIA MARIO", "sup": "", "cupo": ""}, {"cuit": "30718218787", "origen": "Salta", "productor": "DG SERVICIOS & PROCESOS S.A.S.", "sup": "", "cupo": ""}, {"cuit": "20333788870", "origen": "Salta", "productor": "DIAZ JOSE ANTONIO", "sup": "", "cupo": "4000"}, {"cuit": "20072645783", "origen": "Salta", "productor": "DONCELA GUILLERMO", "sup": "", "cupo": ""}, {"cuit": "23216340159", "origen": "Salta", "productor": "FERNANDEZ LUIS ANTONIO", "sup": "", "cupo": ""}, {"cuit": "20122319009", "origen": "Salta", "productor": "FLORES CIPRIANO EUGENIO", "sup": "", "cupo": ""}, {"cuit": "27930680031", "origen": "Salta", "productor": "FLORES COLQUE JESSICA ISABEL", "sup": "", "cupo": ""}, {"cuit": "20392375687", "origen": "Salta", "productor": "FLORES COLQUE JONATHAN MAXIMILIANO", "sup": "", "cupo": "5000"}, {"cuit": "20414450971", "origen": "Salta", "productor": "FLORES FABRICIO FEDERICO", "sup": "", "cupo": ""}, {"cuit": "20940152489", "origen": "Salta", "productor": "FLORES LAZARO FELIX", "sup": "", "cupo": ""}, {"cuit": "27165870994", "origen": "Salta", "productor": "FLORES REMEDIA", "sup": "", "cupo": ""}, {"cuit": "20236541100", "origen": "Salta", "productor": "FUENTES JULIO CESAR", "sup": "", "cupo": ""}, {"cuit": "20143030300", "origen": "Salta", "productor": "GAMARRA RAUL ANTONIO", "sup": "", "cupo": ""}, {"cuit": "20140074471", "origen": "Salta", "productor": "GARCIA JUAN JOSE", "sup": "", "cupo": ""}, {"cuit": "20118189915", "origen": "Salta", "productor": "GIMENEZ JOSE ANTONIO", "sup": "", "cupo": ""}, {"cuit": "20246970662", "origen": "Salta", "productor": "GENTILE OSCAR EFRAIN", "sup": "", "cupo": "2000"}, {"cuit": "23314517644", "origen": "Salta", "productor": "GIMENEZ SINGH FLAVIA MELISA", "sup": "", "cupo": ""}, {"cuit": "20360471889", "origen": "Salta", "productor": "GIMENEZ ZAMORA GASTON EDUARDO", "sup": "", "cupo": "5000"}, {"cuit": "27049216292", "origen": "Salta", "productor": "GOMEZ ROSA", "sup": "", "cupo": ""}, {"cuit": "20423033070", "origen": "Salta", "productor": "GUTIERREZ IVO LIONEL", "sup": "", "cupo": ""}, {"cuit": "27347889348", "origen": "Salta", "productor": "GUTIERREZ MARIA LUJAN", "sup": "", "cupo": "10000"}, {"cuit": "27222121472", "origen": "Salta", "productor": "GUERRA NORMA CLAUDIA", "sup": "", "cupo": ""}, {"cuit": "23046200969", "origen": "Salta", "productor": "HOYOS SIMON AGUSTIN", "sup": "", "cupo": ""}, {"cuit": "30709244333", "origen": "Salta", "productor": "JATRIAN S.R.L", "sup": "", "cupo": ""}, {"cuit": "20105818883", "origen": "Salta", "productor": "JIMENEZ CABRERIZO MANUEL MARIA", "sup": "", "cupo": "5000"}, {"cuit": "20222538875", "origen": "Salta", "productor": "LAGUNA MARCELINO OSCAR", "sup": "", "cupo": "5000"}, {"cuit": "20137018226", "origen": "Organico", "productor": "LEWIS CARLOS JORGE", "sup": "", "cupo": ""}, {"cuit": "27939233259", "origen": "Salta", "productor": "LOPEZ GAY MARIA DOLORES", "sup": "", "cupo": ""}, {"cuit": "20440159088", "origen": "Salta", "productor": "LOPEZ MATIAS NICOLAS", "sup": "", "cupo": "5000"}, {"cuit": "30710788754", "origen": "Salta", "productor": "LOS PALTOS S.R.L.", "sup": "", "cupo": "3000"}, {"cuit": "27230814258", "origen": "Salta", "productor": "MARCO EUGENIA FABIOLA", "sup": "", "cupo": ""}, {"cuit": "20187470243", "origen": "Salta", "productor": "MARQUEZ NELSON JAVIER", "sup": "", "cupo": "4000"}, {"cuit": "20290750742", "origen": "Salta", "productor": "MARTINEZ GIMENEZ PEDRO SEBASTIAN", "sup": "", "cupo": "5000"}, {"cuit": "27401571391", "origen": "Salta", "productor": "MATTOS FACUNDO ULISES", "sup": "", "cupo": ""}, {"cuit": "20254115747", "origen": "Salta", "productor": "MONTES FERNANDEZ JAVIER AGUSTIN", "sup": "", "cupo": ""}, {"cuit": "27279726559", "origen": "Salta", "productor": "MONTES FERNANDEZ TRIANA SOLEDAD", "sup": "", "cupo": ""}, {"cuit": "20176365413", "origen": "Salta", "productor": "MORENO RAUL ANDRES", "sup": "", "cupo": "5000"}, {"cuit": "20311944860", "origen": "Salta", "productor": "MUÑOZ BRACERO LUIS", "sup": "", "cupo": ""}, {"cuit": "20166649359", "origen": "Salta", "productor": "MUÑOZ CRISTOBAL", "sup": "", "cupo": ""}, {"cuit": "20226127888", "origen": "Salta", "productor": "PALOMINO ADOLFO GUSTAVO", "sup": "", "cupo": ""}, {"cuit": "20302276219", "origen": "Salta", "productor": "PARDO BERRUEZO CRISTIAN MARTIN", "sup": "", "cupo": ""}, {"cuit": "23282622629", "origen": "Salta", "productor": "PEREZ FERNANDEZ CARLOS ALBERTO", "sup": "", "cupo": ""}, {"cuit": "20271757973", "origen": "Salta", "productor": "PEREZ FERNANDEZ MIGUEL AGUSTIN", "sup": "", "cupo": "10000"}, {"cuit": "20317547502", "origen": "Salta", "productor": "PONCE ANGEL ALFREDO", "sup": "", "cupo": ""}, {"cuit": "23421329079", "origen": "Salta", "productor": "PONCE DESIMA MARCO CARLOS DANIEL", "sup": "", "cupo": ""}, {"cuit": "20417516779", "origen": "Salta", "productor": "PRIETO GONZALO LEONEL", "sup": "", "cupo": ""}, {"cuit": "20295467674", "origen": "Salta", "productor": "PRIETO HECTOR MIGUEL", "sup": "", "cupo": ""}, {"cuit": "20927825695", "origen": "Salta", "productor": "RAMIREZ ALMAZAN TOMAS SAUL", "sup": "", "cupo": ""}, {"cuit": "20385075147", "origen": "Salta", "productor": "RESINA GABRIEL JESUS", "sup": "", "cupo": ""}, {"cuit": "20175220063", "origen": "Salta", "productor": "RESINA JOSE RAMON", "sup": "", "cupo": ""}, {"cuit": "20143962513", "origen": "Salta", "productor": "ROBLEDO LUIS", "sup": "", "cupo": ""}, {"cuit": "20163616808", "origen": "Salta", "productor": "RODRIGUEZ HERNAN HIPOLITO", "sup": "", "cupo": ""}, {"cuit": "20286330763", "origen": "Salta", "productor": "RODRIGUEZ QUEVEDO ALBERTO", "sup": "", "cupo": ""}, {"cuit": "27433367044", "origen": "Salta", "productor": "RUEDA JENNIFER MELINA", "sup": "", "cupo": ""}, {"cuit": "27269137040", "origen": "Salta", "productor": "RUEDA ELIA IVANA", "sup": "", "cupo": ""}, {"cuit": "20279804601", "origen": "Salta", "productor": "SANCHEZ GALERA ANDRES", "sup": "", "cupo": ""}, {"cuit": "20318644579", "origen": "Salta", "productor": "SANCHEZ HUGO MARCELO", "sup": "", "cupo": ""}, {"cuit": "23420791569", "origen": "Salta", "productor": "SANCHEZ JON ALEX", "sup": "", "cupo": ""}, {"cuit": "20418205165", "origen": "Organico", "productor": "SANCHEZ TOMAS AGUSTIN", "sup": "", "cupo": ""}, {"cuit": "20112951149", "origen": "Salta", "productor": "SARAPURA ADOLFO GREGORIO", "sup": "", "cupo": ""}, {"cuit": "20335929439", "origen": "Salta", "productor": "SARAPURA DARIO LUCAS", "sup": "", "cupo": "5000"}, {"cuit": "20357790906", "origen": "Salta", "productor": "SARAPURA RAFAEL ADRIAN", "sup": "", "cupo": ""}, {"cuit": "20215934862", "origen": "Salta", "productor": "SAUBIDET JORGE ORLANDO", "sup": "", "cupo": ""}, {"cuit": "23252189769", "origen": "Salta", "productor": "SEGURA  JORGE DANIEL", "sup": "", "cupo": ""}, {"cuit": "20237493886", "origen": "Salta", "productor": "SOTO LOPEZ JUAN JOSE", "sup": "", "cupo": ""}, {"cuit": "20152685301", "origen": "Salta", "productor": "SUCESION DE ALFARO MANUEL", "sup": "", "cupo": "5000"}, {"cuit": "27174912071", "origen": "Salta", "productor": "SUCESION DE BRACERO ADRIANA ISABEL", "sup": "", "cupo": ""}, {"cuit": "20264917817", "origen": "Salta", "productor": "TACHE OSVALDO DANIEL", "sup": "", "cupo": "6000"}, {"cuit": "20081717959", "origen": "Salta", "productor": "TAPIA LEONARDO", "sup": "", "cupo": "10000"}, {"cuit": "20392173634", "origen": "Salta", "productor": "TASCA ROMANO OSCAR FERNANDO", "sup": "", "cupo": ""}, {"cuit": "20403255840", "origen": "Salta", "productor": "TEJERINA LEONEL", "sup": "", "cupo": "5000"}, {"cuit": "20242466897", "origen": "Salta", "productor": "TEJERINA OMAR ORLANDO", "sup": "", "cupo": ""}, {"cuit": "20265821201", "origen": "Salta", "productor": "TORRES ROBERTO DANIEL", "sup": "", "cupo": "15000"}, {"cuit": "27364042707", "origen": "Salta", "productor": "VEIZAGA JOANA", "sup": "", "cupo": ""}, {"cuit": "20274658089", "origen": "Salta", "productor": "VERCELLINO EDUARDO ARIEL", "sup": "", "cupo": "15000"}, {"cuit": "20083880946", "origen": "Salta", "productor": "VERCELLINO NESTOR EDUARDO", "sup": "", "cupo": ""}, {"cuit": "27392154812", "origen": "Salta", "productor": "YELAMOS GARCIA JENNIE KAREN", "sup": "", "cupo": "2000"}, {"cuit": "27221615854", "origen": "Salta", "productor": "ZAMORA CARLA SILVANA", "sup": "", "cupo": ""}, {"cuit": "27937146987", "origen": "Salta", "productor": "ZARATE ROCHA BASILIA", "sup": "", "cupo": ""}, {"cuit": "20307343763", "origen": "Salta", "productor": "ZERPA  MANUEL TOMAS", "sup": "", "cupo": ""}, {"cuit": "20215488358", "origen": "Organico", "productor": "ZORICICH GUSTAVO MARTIN", "sup": "", "cupo": "30000"}, {"cuit": "20405239966", "origen": "Salta", "productor": "ZUÑIGA MAXIMILIANO WASHIGTON", "sup": "", "cupo": ""}, {"cuit": "20939266152", "origen": "Salta", "productor": "ZUÑIGA VARGAS JUSTINO", "sup": "", "cupo": "5000"}];
+
+// ============================================================
+//  SIDEBAR
+// ============================================================
+function renderSidebar(q='') {
+  const list = document.getElementById('producerList');
+  const filtered = PRODUCERS.filter(p =>
+    p.productor.toLowerCase().includes(q.toLowerCase()) ||
+    p.cuit.includes(q)
+  );
+  list.innerHTML = filtered.map(p => {
+    const pData = allData[p.cuit] || {};
+    const stages = ['almacigo','plantacion','cultivo','cosecha','clasificado'];
+    const colors = ['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)'];
+    const dots = stages.map((s,i) => {
+      const d = pData[s];
+      const filled = d && Object.values(d).some(v => v && String(v).trim() !== '');
+      return `<div class="pi-dot" style="${filled ? 'background:'+colors[i]+';border-color:'+colors[i] : ''}"></div>`;
+    }).join('');
+    const isActive = currentProducer && currentProducer.cuit === p.cuit;
+    return `<div class="producer-item${isActive?' active':''}" onclick="selectProducer('${p.cuit}')">
+      <div class="pi-name">${p.productor}</div>
+      <div class="pi-meta">
+        <span>${p.origen}</span>
+        <span>${p.sup} ha</span>
+        <div class="pi-dots">${dots}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectProducer(cuit) {
+  currentProducer = PRODUCERS.find(p => p.cuit === cuit);
+  currentStage = 0;
+  document.getElementById('stageTabs').style.display = 'flex';
+  document.getElementById('saveBarEl').style.display = 'flex';
+  updateStageTabs();
+  renderStageForm();
+  renderSidebar(document.getElementById('searchInput').value);
+  // Close sidebar on mobile
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+function switchStage(idx) {
+  currentStage = idx;
+  updateStageTabs();
+  renderStageForm();
+}
+
+function updateStageTabs() {
+  document.querySelectorAll('.stage-tab').forEach((t,i) => {
+    t.classList.toggle('active', i === currentStage);
+  });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+// ============================================================
+//  GEO
+// ============================================================
+function geoHtml(stageIdx) {
+  if (!currentProducer) return '';
+  const stageKey = ['almacigo','plantacion','cultivo','cosecha','clasificado'][stageIdx];
+  const d = getData(currentProducer.cuit, stageIdx);
+  const fincas = d.fincas || [];
+  const fincaItems = fincas.map((f,i) => `
+    <div class="coord-item">
+      <div class="coord-item-info">
+        <div class="coord-name">${f.nombre}</div>
+        <div class="coord-vals">${f.lat}, ${f.lng}${f.accuracy ? ' ±'+f.accuracy+'m' : ''}</div>
+        <div class="coord-vals" style="color:var(--text3)">${f.timestamp||''}</div>
+      </div>
+      <button class="coord-del" onclick="removeFinca(${i},${stageIdx})">✕</button>
+    </div>`).join('');
+  const hasPins = fincas.length > 0;
+  const mapPins = hasPins ? `<div style="color:var(--gold);font-size:12px;text-align:center">
+    📍 ${fincas.length} finca${fincas.length>1?'s':''} registrada${fincas.length>1?'s':''}
+    <br><span style="color:var(--text3);font-size:11px">${fincas.map(f=>f.nombre).join(', ')}</span>
+  </div>` : '';
+  return `<div class="geo-section">
+    <div class="geo-header">📍 Georreferenciación</div>
+    <div class="finca-name-row">
+      <input class="finca-name-input" id="fincaNameInput" placeholder="Nombre de finca..." value="">
+    </div>
+    <div class="geo-btn-row">
+      <button class="geo-btn" onclick="captureGeo(${stageIdx})">📡 GPS automático</button>
+      <button class="geo-btn" onclick="manualGeo(${stageIdx})">✏️ Ingresar manual</button>
+    </div>
+    ${hasPins ? `<div class="coord-list">${fincaItems}</div>` : ''}
+    <div class="geo-map-preview">
+      ${hasPins ? mapPins : '<div class="map-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 4px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Sin coordenadas</div>'}
+    </div>
+  </div>`;
+}
+
+function captureGeo(stageIdx) {
+  if (!navigator.geolocation) { showToast('GPS no disponible', true); return; }
+  showToast('Obteniendo ubicación...');
+  navigator.geolocation.getCurrentPosition(pos => {
+    const nombre = document.getElementById('fincaNameInput')?.value || 'Finca';
+    const d = getData(currentProducer.cuit, stageIdx);
+    if (!d.fincas) d.fincas = [];
+    d.fincas.push({ nombre, lat: pos.coords.latitude.toFixed(6), lng: pos.coords.longitude.toFixed(6), accuracy: pos.coords.accuracy.toFixed(0), timestamp: new Date().toLocaleString('es-AR') });
+    saveAllData();
+    renderStageForm();
+    showToast('Ubicación capturada ✓');
+  }, err => showToast('Error GPS: ' + err.message, true), { enableHighAccuracy:true, timeout:10000 });
+}
+
+function manualGeo(stageIdx) {
+  const lat = prompt('LATITUD (ej: -23.456789):');
+  if (!lat) return;
+  const lng = prompt('LONGITUD (ej: -65.123456):');
+  if (!lng) return;
+  if (isNaN(parseFloat(lat)) || isNaN(parseFloat(lng))) { showToast('Coordenadas inválidas', true); return; }
+  const nombre = document.getElementById('fincaNameInput')?.value || 'Finca';
+  const d = getData(currentProducer.cuit, stageIdx);
+  if (!d.fincas) d.fincas = [];
+  d.fincas.push({ nombre, lat: parseFloat(lat).toFixed(6), lng: parseFloat(lng).toFixed(6), timestamp: new Date().toLocaleString('es-AR') });
+  saveAllData();
+  showToast('Coordenada guardada ✓');
+  renderStageForm();
+}
+
+function removeFinca(idx, stageIdx) {
+  const d = getData(currentProducer.cuit, stageIdx);
+  d.fincas.splice(idx, 1);
+  saveAllData();
+  renderStageForm();
+}
+
+// ============================================================
+//  CHECKBOX
+// ============================================================
+function toggleCheck(field, value, stageIdx) {
+  const d = getData(currentProducer.cuit, stageIdx);
+  if (!d[field]) d[field] = [];
+  const idx = d[field].indexOf(value);
+  if (idx >= 0) d[field].splice(idx, 1);
+  else d[field].push(value);
+  // Update visual
+  event.currentTarget.classList.toggle('checked', d[field].includes(value));
+}
+
+function checkList(items, field, stageIdx) {
+  const d = getData(currentProducer.cuit, stageIdx);
+  const checked = d[field] || [];
+  return items.map(v => `<label class="cb-item${checked.includes(v)?' checked':''}" onclick="toggleCheck('${field}','${v}',${stageIdx})">
+    <input type="checkbox" ${checked.includes(v)?'checked':''}> ${v}
+  </label>`).join('');
+}
+
+// ============================================================
+//  FORMS
+// ============================================================
+function renderStageForm() {
+  const form = document.getElementById('formArea');
+  if (!currentProducer) return;
+  const d = getData(currentProducer.cuit, currentStage);
+  let html = '';
+  if (currentStage === 0) html = almacijoForm(d);
+  else if (currentStage === 1) html = plantacionForm(d);
+  else if (currentStage === 2) html = cultivoForm(d);
+  else if (currentStage === 3) html = cosechaForm(d);
+  else if (currentStage === 4) html = clasificadoForm(d);
+  form.innerHTML = html;
+}
+
+function almacijoForm(d) {
+  return geoHtml(0) + `
+  <div class="section-title s1-title">Datos del Almácigo</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Fecha visita <span class="req">*</span></div>
+      <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}"></div>
+    <div class="field-group"><div class="field-label">Sup. a plantar (ha)</div>
+      <input type="number" class="field-input" id="f_sup_plantar" step="0.01" placeholder="0.00" value="${d.sup_plantar||''}"></div>
+    <div class="field-group"><div class="field-label">Tipo de almácigo</div>
+      <select class="field-select" id="f_tipo_almacigo">
+        <option value="">— Seleccionar —</option>
+        ${ALMACIGO_TIPOS.map(t=>`<option ${d.tipo_almacigo===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+    <div class="field-group"><div class="field-label">Sup. almácigo (ha)</div>
+      <input type="number" class="field-input" id="f_sup_almacigo" step="0.01" placeholder="0.00" value="${d.sup_almacigo||''}"></div>
+  </div>
+  <div class="section-title s1-title">Semilla</div>
+  <div class="form-grid three">
+    <div class="field-group"><div class="field-label">Tipo semilla</div>
+      <select class="field-select" id="f_semilla_tipo">
+        <option value="">— Seleccionar —</option>
+        ${SEMILLA_TIPOS.map(t=>`<option ${d.semilla_tipo===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+    <div class="field-group"><div class="field-label">Variedad 1</div>
+      <select class="field-select" id="f_semilla_var1">
+        <option value="">— Seleccionar —</option>
+        ${SEMILLA_VARIEDADES.map(t=>`<option ${d.semilla_var1===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+    <div class="field-group"><div class="field-label">Sup. Var.1 (ha)</div>
+      <input type="number" class="field-input" id="f_sup_var1" step="0.01" value="${d.sup_var1||''}"></div>
+    <div class="field-group" style="grid-column:2"><div class="field-label">Variedad 2</div>
+      <select class="field-select" id="f_semilla_var2">
+        <option value="">— Seleccionar —</option>
+        ${SEMILLA_VARIEDADES.map(t=>`<option ${d.semilla_var2===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+    <div class="field-group"><div class="field-label">Sup. Var.2 (ha)</div>
+      <input type="number" class="field-input" id="f_sup_var2" step="0.01" value="${d.sup_var2||''}"></div>
+  </div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Observaciones</div>
+    <textarea class="field-textarea" id="f_obs" placeholder="Observaciones...">${d.obs||''}</textarea></div></div>`;
+}
+
+function plantacionForm(d) {
+  return geoHtml(1) + `
+  <div class="section-title s2-title">Datos de Plantación</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Fecha visita <span class="req">*</span></div>
+      <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}"></div>
+    <div class="field-group"><div class="field-label">Tipo transplante</div>
+      <select class="field-select" id="f_tipo_transplante">
+        <option value="">— Seleccionar —</option>
+        ${TRANSPLANTE_TIPOS.map(t=>`<option ${d.tipo_transplante===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+    <div class="field-group"><div class="field-label">Fecha plantación</div>
+      <input type="date" class="field-input" id="f_fecha_plantacion" value="${d.fecha_plantacion||''}"></div>
+    <div class="field-group"><div class="field-label">Sup. plantada (ha)</div>
+      <input type="number" class="field-input" id="f_sup_plantada" step="0.01" value="${d.sup_plantada||''}"></div>
+  </div>
+  <div class="section-title s2-title">Fertilización</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Formulación 1 (ej: 13-00-44)</div>
+      <input type="text" class="field-input" id="f_fert1" placeholder="ej: 13-11-27" value="${d.fert1||''}"></div>
+    <div class="field-group"><div class="field-label">Dosis 1 (kg/ha)</div>
+      <input type="number" class="field-input" id="f_dosis1" step="0.1" value="${d.dosis1||''}"></div>
+    <div class="field-group"><div class="field-label">Formulación 2 (ej: 13-00-44)</div>
+      <input type="text" class="field-input" id="f_fert2" placeholder="ej: 13-00-44" value="${d.fert2||''}"></div>
+    <div class="field-group"><div class="field-label">Dosis 2 (kg/ha)</div>
+      <input type="number" class="field-input" id="f_dosis2" step="0.1" value="${d.dosis2||''}"></div>
+  </div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Observaciones</div>
+    <textarea class="field-textarea" id="f_obs" placeholder="Observaciones...">${d.obs||''}</textarea></div></div>`;
+}
+
+function cultivoForm(d) {
+  return geoHtml(2) + `
+  <div class="section-title s3-title">Datos de Cultivo</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Fecha visita <span class="req">*</span></div>
+      <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}"></div>
+    <div class="field-group"><div class="field-label">Desflore</div>
+      <select class="field-select" id="f_desflore">
+        <option value="">— Seleccionar —</option>
+        <option ${d.desflore==='SI'?'selected':''}>SI</option>
+        <option ${d.desflore==='NO'?'selected':''}>NO</option>
+      </select></div>
+    <div class="field-group"><div class="field-label">Pérdidas estimadas (%)</div>
+      <input type="number" class="field-input" id="f_perdidas" min="0" max="100" value="${d.perdidas||''}"></div>
+    <div class="field-group"><div class="field-label">Estado sanitario</div>
+      <select class="field-select" id="f_sanidad_status">
+        <option value="">— Seleccionar —</option>
+        <option ${d.sanidad_status==='Bueno'?'selected':''}>Bueno</option>
+        <option ${d.sanidad_status==='Regular'?'selected':''}>Regular</option>
+        <option ${d.sanidad_status==='Malo'?'selected':''}>Malo</option>
+      </select></div>
+  </div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Descripción sanitaria</div>
+    <textarea class="field-textarea" id="f_sanidad_desc" placeholder="Descripción...">${d.sanidad_desc||''}</textarea></div></div>
+  <div class="section-title s3-title">Fungosis</div>
+  <div class="form-grid full"><div class="field-group">
+    <div class="checkbox-group">${checkList(FUNGOSIS,'fungosis',2)}</div>
+  </div></div>
+  <div class="section-title s3-title">Virosis</div>
+  <div class="form-grid full"><div class="field-group">
+    <div class="checkbox-group">${checkList(VIROSIS,'virosis',2)}</div>
+  </div></div>
+  <div class="section-title s3-title">Bacteriosis</div>
+  <div class="form-grid full"><div class="field-group">
+    <div class="checkbox-group">${checkList(BACTERIOSIS,'bacteriosis',2)}</div>
+  </div></div>
+  <div class="section-title s3-title">Plagas</div>
+  <div class="form-grid full"><div class="field-group">
+    <div class="checkbox-group">${checkList(PLAGAS,'plagas',2)}</div>
+  </div></div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Observaciones</div>
+    <textarea class="field-textarea" id="f_obs" placeholder="Observaciones...">${d.obs||''}</textarea></div></div>`;
+}
+
+function cosechaForm(d) {
+  return geoHtml(3) + `
+  <div class="section-title s4-title">Datos de Cosecha</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Fecha visita <span class="req">*</span></div>
+      <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}"></div>
+    <div class="field-group"><div class="field-label">Inicio cosecha</div>
+      <input type="date" class="field-input" id="f_fecha_inicio" value="${d.fecha_inicio||''}"></div>
+    <div class="field-group"><div class="field-label">Propietario / Arrendero</div>
+      <select class="field-select" id="f_estufas_status">
+        <option value="">— Seleccionar —</option>
+        ${COSECHA_STATUS.map(t=>`<option ${d.estufas_status===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+  </div>
+  <div class="section-title s4-title">Estufas Box</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Box 12 canastos (cant)</div>
+      <input type="number" class="field-input" id="f_box_12" min="0" value="${d.box_12||''}"></div>
+  </div>
+  <div class="section-title s4-title">Estufas BC</div>
+  <div class="form-grid three">
+    <div class="field-group"><div class="field-label">BC 360 peines (cant)</div>
+      <input type="number" class="field-input" id="f_bc_360" min="0" value="${d.bc_360||''}"></div>
+    <div class="field-group"><div class="field-label">BC 270 peines (cant)</div>
+      <input type="number" class="field-input" id="f_bc_270" min="0" value="${d.bc_270||''}"></div>
+    <div class="field-group"><div class="field-label">BC 180 peines (cant)</div>
+      <input type="number" class="field-input" id="f_bc_180" min="0" value="${d.bc_180||''}"></div>
+  </div>
+  <div class="section-title s4-title">Estufas CV</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">CV 2500 cañas (cant)</div>
+      <input type="number" class="field-input" id="f_cv_2500" min="0" value="${d.cv_2500||''}"></div>
+    <div class="field-group"><div class="field-label">CV 2000 cañas (cant)</div>
+      <input type="number" class="field-input" id="f_cv_2000" min="0" value="${d.cv_2000||''}"></div>
+    <div class="field-group"><div class="field-label">CV 1500 cañas (cant)</div>
+      <input type="number" class="field-input" id="f_cv_1500" min="0" value="${d.cv_1500||''}"></div>
+    <div class="field-group"><div class="field-label">CV 1000 cañas (cant)</div>
+      <input type="number" class="field-input" id="f_cv_1000" min="0" value="${d.cv_1000||''}"></div>
+  </div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Observaciones</div>
+    <textarea class="field-textarea" id="f_obs" placeholder="Observaciones...">${d.obs||''}</textarea></div></div>`;
+}
+
+function clasificadoForm(d) {
+  return geoHtml(4) + `
+  <div class="section-title s5-title">Datos de Clasificado</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Fecha visita <span class="req">*</span></div>
+      <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}"></div>
+    <div class="field-group"><div class="field-label">Tipo clasificación</div>
+      <select class="field-select" id="f_clasificacion_tipo">
+        <option value="">— Seleccionar —</option>
+        ${CLASIF_TIPOS.map(t=>`<option ${d.clasificacion_tipo===t?'selected':''}>${t}</option>`).join('')}
+      </select></div>
+  </div>
+  <div class="section-title s5-title">Capacitaciones</div>
+  <div class="form-grid">
+    <div class="field-group"><div class="field-label">Cap. Materia extraña</div>
+      <select class="field-select" id="f_cap_materia">
+        <option value="">— Seleccionar —</option>
+        <option ${d.cap_materia==='SI'?'selected':''}>SI</option>
+        <option ${d.cap_materia==='NO'?'selected':''}>NO</option>
+      </select></div>
+    <div class="field-group"><div class="field-label">Fecha cap. materia</div>
+      <input type="date" class="field-input" id="f_fecha_cap_materia" value="${d.fecha_cap_materia||''}"></div>
+    <div class="field-group"><div class="field-label">Cap. Humedad</div>
+      <select class="field-select" id="f_cap_humedad">
+        <option value="">— Seleccionar —</option>
+        <option ${d.cap_humedad==='SI'?'selected':''}>SI</option>
+        <option ${d.cap_humedad==='NO'?'selected':''}>NO</option>
+      </select></div>
+    <div class="field-group"><div class="field-label">Fecha cap. humedad</div>
+      <input type="date" class="field-input" id="f_fecha_cap_humedad" value="${d.fecha_cap_humedad||''}"></div>
+  </div>
+  <div class="form-grid full"><div class="field-group"><div class="field-label">Observaciones</div>
+    <textarea class="field-textarea" id="f_obs" placeholder="Observaciones...">${d.obs||''}</textarea></div></div>`;
+}
+
+// ============================================================
+//  GUARDAR — AHORA PERSISTE EN localStorage
+// ============================================================
+function collectFields() {
+  if (!currentProducer) return;
+  const d = getData(currentProducer.cuit, currentStage);
+  document.querySelectorAll('[id^="f_"]').forEach(el => {
+    if (el.id === 'fincaNameInput') return;
+    const key = el.id.replace('f_','');
+    if (el.type === 'checkbox') return;
+    d[key] = el.value;
+  });
+}
+
+function saveForm() {
+  collectFields();
+  saveAllData(); // ← PERSISTE EN localStorage
+  renderSidebar(document.getElementById('searchInput').value);
+  showToast('Datos guardados ✓');
+}
+
+function clearForm() {
+  if (!confirm('¿Limpiar todos los datos de esta etapa?')) return;
+  const stageKey = ['almacigo','plantacion','cultivo','cosecha','clasificado'][currentStage];
+  const fincas = allData[currentProducer.cuit]?.[stageKey]?.fincas;
+  allData[currentProducer.cuit][stageKey] = {};
+  if (fincas) allData[currentProducer.cuit][stageKey].fincas = fincas;
+  saveAllData();
+  renderStageForm();
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+renderSidebar();
+updateSaveStatus();
+</script>
+</body>
+</html>
