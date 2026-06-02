@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAP Tabaco 2026-2027 · Tabacos del Valle</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GAP Tabaco">
+<meta name="theme-color" content="#c8a84b">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEM0lEQVR4nO2XW0wcZRTH/7PXmWV32QV2lwwO3QJSLpWLApZaC03bYI0GA6FprdSm1UaIpklN00ZTE5uS9MEHL8mKQUVQq0YhplJLTayBaJEKKZeFbsGwlMsWKBRkYdkLu8cHBLEPZhAKieH/NHMm3//8cs7JN9/H4C/xeRbCKspRXcwAgGQtki/OyaxEcoYBHXkyqT6KD2bOVv76iMvjCxK7Vrbc5ABQlJta/3rhliwAiDRpm547ezFN7FrJcpObw4NvHdqz+cFpt2961h+YTTSHCVnJQvOqATz/RGJvRJia9/r8nr7hyQGjXmV6rXCL6BYsCYBhQMFq5QTDYGFuBKOWdYxOOfQaNiSK15nHne67RARTSNCwGE9RM5AeF95+6sCjgbjI0Mg/pj1TIRpWYrWP2t/5ptmfFG0QjHqVsenmUHuoltOYQlSGh6IMcRpO3iOGQFQF+DC1M5rX8wzAbDBpBblMIo8V9A+UvPi4/ue2gR6nyzuZEmOMC2LlHKuQcZ29Y139I05ejLeoCow73axBxxnm31mFjGMVMi4QQECjUsgco1N34s2hOqNeZeofcQ6EaFmtx+dnxXiLqsAv7YPJVvuo7d64QccZOKVMlmAOi/19cMLuGJ1yqDm5qqym7aYYX9EA/gBJT5bWBTw+v/veb1kpwsOXGnsag1UKtVIhVXYPjA98WNO2VSzAknbCrZsjWkpf3S2EarnQxXGXxzddWdvRNDTuwldXbCmT057g+wIAABqVYvLA7oTruY/FGIPVSjUIZOsbu11W08Y2dDiSl+L1nwBWWsveCdcB/n8AudtiMFhVBG2QclUAVuRA8m/KydiI43vTEBOhw9SMD1V1XThTcRVKuRSt5YfubwuSog0oO5GDBusgUo5UYP+Z7xAgWgBTs4q5CkSEqfHxqT1INIeBYf42MOg4vP3KTmTEh2NqxgfLty1IizVBxcpRWHIRx/emoWDHJpwsrcMXbzyNABFGxl0o+bQB1fXdyEnfCAnD4Nz5a3B7Z9HZO4bO3gYAQP72WDR3Dc1V4IWnkrAhXIvkw5/ggwutCwDFz6QiO0WASimHUafC6YOZqLjcgexUAYJRg30741H+vRUerx89jgkQAeEhQXh2VwIAgGEAAoGIkL89FoNVRej7+iXoNSyyUwVcarT/swVKhRRSKbM4BKfLi20vn0dE/vuILCjFVesgOuyjeO/YLug1Snx5xYaCHZvAKmTILPoMLd0jkEnnbH/4rRcAcGJ/Bmqv2XHu80YAc4Muk0pw+mDm3Pk8/WgltffcoUCAFhRX+BElHy6nn673kcvtIyIiW98Y8XkWOvbuj0REVFFrJT7PQvvevEB3J2cW1l67cZv4PAvxeRY6+tZlunFrjNzeWRoen6bq+i5qsg1RfWs/8XkWWv8XrANI5m+payFHdTEjmX9Yi+QA8CfLULH2aIoqIQAAAABJRU5ErkJggg==">
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2436;
+    --border: #2a3050;
+    --accent: #c8a84b;
+    --accent2: #e8c96a;
+    --green: #4caf7d;
+    --red: #e05c5c;
+    --blue: #5b8dee;
+    --orange: #f0944a;
+    --purple: #9b7ee8;
+    --text: #e8eaf0;
+    --text2: #8b92a8;
+    --text3: #5a6178;
+    --stage1: #4caf7d;
+    --stage2: #5b8dee;
+    --stage3: #f0944a;
+    --stage4: #e05c5c;
+    --stage5: #9b7ee8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
+  .header-logo svg { color: var(--accent); }
+  .header-sub { color: var(--text2); font-size: 12px; font-weight: 400; }
+  .header-badge {
+    margin-left: auto;
+    background: rgba(200,168,75,0.12);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sidebar-search {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px 8px 34px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    position: relative;
+  }
+  .search-wrap { position: relative; }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    pointer-events: none;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .producer-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+  .producer-list::-webkit-scrollbar { width: 4px; }
+  .producer-list::-webkit-scrollbar-track { background: transparent; }
+  .producer-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .producer-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .producer-item:hover { background: rgba(255,255,255,0.03); }
+  .producer-item.active {
+    background: rgba(200,168,75,0.07);
+    border-left-color: var(--accent);
+  }
+  .producer-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .producer-meta {
+    font-size: 11px;
+    color: var(--text2);
+    font-family: 'Roboto Mono', monospace;
+    margin-top: 2px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .origin-badge {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .origin-jujuy { background: rgba(91,141,238,0.15); color: #5b8dee; }
+  .origin-salta { background: rgba(240,148,74,0.15); color: #f0944a; }
+  .origin-organico { background: rgba(76,175,125,0.15); color: #4caf7d; }
+  .progress-dots { display: flex; gap: 3px; margin-top: 5px; }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .dot.filled { background: var(--accent); }
+  .dot.filled.s1 { background: var(--stage1); }
+  .dot.filled.s2 { background: var(--stage2); }
+  .dot.filled.s3 { background: var(--stage3); }
+  .dot.filled.s4 { background: var(--stage4); }
+  .dot.filled.s5 { background: var(--stage5); }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+  }
+  .main::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* PRODUCER HEADER */
+  .producer-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .producer-header h2 { font-size: 20px; font-weight: 700; }
+  .producer-header .cuit {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+  .producer-stats { display: flex; gap: 20px; }
+  .stat-item { text-align: right; }
+  .stat-value { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* STAGES TABS */
+  .stages-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+  }
+  .stage-tab {
+    flex: 1;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    letter-spacing: 0.3px;
+  }
+  .stage-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .stage-tab.active {
+    color: #fff;
+    border-color: currentColor;
+  }
+  .stage-tab.active.t1 { background: rgba(76,175,125,0.18); color: var(--stage1); border-color: rgba(76,175,125,0.3); }
+  .stage-tab.active.t2 { background: rgba(91,141,238,0.18); color: var(--stage2); border-color: rgba(91,141,238,0.3); }
+  .stage-tab.active.t3 { background: rgba(240,148,74,0.18); color: var(--stage3); border-color: rgba(240,148,74,0.3); }
+  .stage-tab.active.t4 { background: rgba(224,92,92,0.18); color: var(--stage4); border-color: rgba(224,92,92,0.3); }
+  .stage-tab.active.t5 { background: rgba(155,126,232,0.18); color: var(--stage5); border-color: rgba(155,126,232,0.3); }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.full { grid-template-columns: 1fr; }
+  .field-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .field-group.span2 { grid-column: span 2; }
+  .field-group.span3 { grid-column: span 3; }
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text2);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .field-label .req { color: var(--accent); }
+  .field-input, .field-select, .field-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field-textarea { resize: vertical; min-height: 80px; }
+  .field-input:focus, .field-select:focus, .field-textarea:focus {
+    border-color: var(--accent);
+  }
+  .field-select option { background: var(--surface2); }
+  .checkbox-group { display: flex; flex-direction: column; gap: 6px; }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: background 0.1s;
+  }
+  .checkbox-item:hover { background: rgba(255,255,255,0.04); }
+  .checkbox-item input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .checkbox-item label { font-size: 12px; cursor: pointer; color: var(--text2); }
+  .checkbox-item input:checked + label { color: var(--text); }
+
+  /* GEO section */
+  .geo-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .geo-title {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .geo-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+  .btn-geo {
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--accent);
+    padding: 9px 14px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-geo:hover { background: rgba(200,168,75,0.25); }
+  .geo-status {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 8px;
+    font-family: 'Roboto Mono', monospace;
+  }
+  .geo-status.ok { color: var(--green); }
+  .geo-map-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    height: 160px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-placeholder {
+    text-align: center;
+    color: var(--text3);
+    font-size: 12px;
+  }
+  .map-pin {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 3px rgba(200,168,75,0.3);
+    transform: translate(-50%, -50%);
+    transition: all 0.3s;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text2);
+    margin-bottom: 12px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+  }
+  .s1-title:before { background: var(--stage1); }
+  .s2-title:before { background: var(--stage2); }
+  .s3-title:before { background: var(--stage3); }
+  .s4-title:before { background: var(--stage4); }
+  .s5-title:before { background: var(--stage5); }
+
+  /* SAVE BTN */
+  .save-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .btn-save {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-save:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-clear {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn-clear:hover { border-color: var(--text2); color: var(--text); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    gap: 12px;
+    color: var(--text3);
+  }
+  .empty-state svg { opacity: 0.4; }
+  .empty-state h3 { font-size: 16px; font-weight: 600; }
+  .empty-state p { font-size: 13px; }
+
+  /* SAVED INDICATOR */
+  .saved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(76,175,125,0.15);
+    border: 1px solid rgba(76,175,125,0.3);
+    color: var(--green);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* FINCA COORD LIST */
+  .coord-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .coord-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+  }
+  .coord-item .coord-name { color: var(--text); font-weight: 500; font-family: 'Space Grotesk', sans-serif; }
+  .coord-item .coord-val { color: var(--text2); }
+  .coord-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); padding: 2px 6px; border-radius: 4px;
+    font-size: 14px; transition: color 0.15s;
+  }
+  .coord-del:hover { color: var(--red); }
+
+  /* Multi-finca */
+  .finca-add-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+  .finca-name-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+  }
+  .finca-name-input:focus { border-color: var(--accent); }
+
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  /* Responsive mobile */
+  @media (max-width: 768px) {
+    .sidebar { width: 240px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.three { grid-template-columns: 1fr; }
+    .field-group.span2, .field-group.span3 { grid-column: span 1; }
+    .producer-stats { display: none; }
+    .geo-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Install Banner */
+  #installBanner {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 14px 20px;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+  }
+  #installBanner .ib-text { flex: 1; font-size: 13px; }
+  #installBanner .ib-text strong { display: block; font-size: 14px; }
+  #installBanner .ib-text span { color: var(--text2); font-size: 12px; }
+  .btn-install {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-install-close {
+    background: none; border: none; color: var(--text3);
+    font-size: 20px; cursor: pointer; padding: 4px 8px;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+<img src="data:image/png;base64,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" alt="GAP Tabaco" style="width:36px;height:36px;border-radius:8px;object-fit:contain;">
+    <div>
+      <div>GAP Tabaco <span style="color:var(--accent)">2026-2027</span></div>
+      <div class="header-sub">Tabacos del Valle S.A.</div>
+    </div>
+  </div>
+  <div class="header-badge">CAMPAÑA 2026-2027</div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-search">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" class="search-input" placeholder="Buscar productor..." id="searchInput">
+      </div>
+    </div>
+    <div class="producer-list" id="producerList"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainContent">
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <h3>Seleccioná un productor</h3>
+      <p>Elegí un productor de la lista para registrar los datos GAP</p>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  <span id="toastMsg">Datos guardados</span>
+</div>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+const PRODUCERS = [{"cuit":"20140397386","origen":"Jujuy","productor":"ABUD, MIGUEL ENRIQUE","sup":"81.09","cupo":"40000"},{"cuit":"30712527559","origen":"Jujuy","productor":"AGRO SERVICIOS DON RAUL SRL","sup":"30.48","cupo":"40000"},{"cuit":"20047022186","origen":"Jujuy","productor":"AGUIAR, JORGE ALFREDO","sup":"11.87","cupo":"4000"},{"cuit":"20271104627","origen":"Jujuy","productor":"AGUIAR, JUAN MATEO","sup":"11.87","cupo":"4000"},{"cuit":"27289751780","origen":"Jujuy","productor":"ALMAZAN, CINTIA BEATRIZ","sup":"24.61","cupo":"30000"},{"cuit":"20332567951","origen":"Jujuy","productor":"RUIZ, RAUL RICARDO","sup":"8.36","cupo":"5000"},{"cuit":"27417871204","origen":"Jujuy","productor":"ALMAZAN, LEILA LORENA","sup":"23.98","cupo":"12000"},{"cuit":"20340224168","origen":"Jujuy","productor":"ALMAZAN, YAMIL ITALO EMANUEL","sup":"10.04","cupo":""},{"cuit":"20342144412","origen":"Jujuy","productor":"ANACHURI, CRISTIAN SEBASTIAN","sup":"1.21","cupo":"1000"},{"cuit":"20082003852","origen":"Jujuy","productor":"ANACHURI, JOSE SANTOS","sup":"3.42","cupo":"1000"},{"cuit":"20340250703","origen":"Jujuy","productor":"APARICIO, FABIAN ANDRES","sup":"14.61","cupo":""},{"cuit":"20358374450","origen":"Jujuy","productor":"APARICIO, PAOLO SABINO","sup":"5.95","cupo":"10000"},{"cuit":"20358236643","origen":"Jujuy","productor":"APARICIO, RODOLFO NICOLAS","sup":"4.94","cupo":""},{"cuit":"20292958340","origen":"Jujuy","productor":"ARAMAYO GARNICA, FRANCO YAEL","sup":"1.77","cupo":""},{"cuit":"20340250371","origen":"Jujuy","productor":"ARAMAYO GARNICA, MAX ALEXANDER","sup":"1.77","cupo":"2000"},{"cuit":"27414085984","origen":"Jujuy","productor":"ARAMAYO, IRINA MAGALI","sup":"10.19","cupo":""},{"cuit":"27245127206","origen":"Jujuy","productor":"ARROYO, OLGA ESTER","sup":"3.09","cupo":"5000"},{"cuit":"24359110754","origen":"Jujuy","productor":"BARTOLETTI ATILIO ANGEL","sup":"45.29","cupo":""},{"cuit":"27322503895","origen":"Jujuy","productor":"BARTOLETTI, MARIA SOLEDAD","sup":"31.84","cupo":""},{"cuit":"27368927827","origen":"Jujuy","productor":"BARTOLINI, MARIA TATIANA","sup":"21.53","cupo":""},{"cuit":"20188341498","origen":"Jujuy","productor":"BASPINEIRO, DIEGO ARMANDO","sup":"5.67","cupo":"3000"},{"cuit":"20341838224","origen":"Jujuy","productor":"BASPINEIRO, HECTOR RUBEN","sup":"2.82","cupo":"3000"},{"cuit":"20341838186","origen":"Jujuy","productor":"BASPINEIRO, HUGO JAVIER","sup":"4.79","cupo":"3000"},{"cuit":"20416795127","origen":"Jujuy","productor":"BASPINEIRO, LEONEL FABIAN","sup":"5.09","cupo":"3000"},{"cuit":"30716634473","origen":"Jujuy","productor":"BATALLANOS, BATALLANOS - BATABAC SRL","sup":"28.06","cupo":"20000"},{"cuit":"20359110945","origen":"Jujuy","productor":"BATALLANOS, JUAN OMAR","sup":"35.82","cupo":"30000"},{"cuit":"20124749256","origen":"Jujuy","productor":"BATALLANOS, JUAN TEOFILO","sup":"11.27","cupo":""},{"cuit":"20227634392","origen":"Jujuy","productor":"BATALLANOS, LUIS ALBERTO","sup":"17.67","cupo":"20000"},{"cuit":"20379203125","origen":"Jujuy","productor":"BATALLANOS, MATIAS ALBERTO","sup":"15.27","cupo":"18000"},{"cuit":"23401760644","origen":"Jujuy","productor":"BATALLANOS, PAULA ARACELI","sup":"33.11","cupo":"10000"},{"cuit":"20351644282","origen":"Jujuy","productor":"BEGZADEH, JOSE ALBERTO","sup":"8.22","cupo":"3000"},{"cuit":"23215780759","origen":"Jujuy","productor":"BERRUEZCO, GERARDO RAUL","sup":"19.95","cupo":""},{"cuit":"20324289586","origen":"Jujuy","productor":"BOVEDA, GABRIEL ANTONIO","sup":"0","cupo":"1000"},{"cuit":"27166376411","origen":"Jujuy","productor":"CAMACHO, FELISA DOLORES","sup":"23.37","cupo":"20000"},{"cuit":"23335603044","origen":"Jujuy","productor":"SUAREZ, MARIA NOELIA","sup":"6.72","cupo":"5000"},{"cuit":"23317777124","origen":"Jujuy","productor":"TACACHIO, NOELIA BRENDA","sup":"14.50","cupo":"12000"},{"cuit":"20237782012","origen":"Jujuy","productor":"CANCHI, ARIEL RICARDO","sup":"3.27","cupo":"10000"},{"cuit":"20398081774","origen":"Jujuy","productor":"CANCHI, LEANDRO GASTON","sup":"1.09","cupo":""},{"cuit":"20944529129","origen":"Jujuy","productor":"CARDENAS TRUJILLO, SAMUEL","sup":"8.61","cupo":""},{"cuit":"20332547624","origen":"Jujuy","productor":"CARDOZO, ELIAN ISRAEL","sup":"11.39","cupo":""},{"cuit":"27298433201","origen":"Jujuy","productor":"CARDOZO, ANALIA SOLEDAD","sup":"3.38","cupo":"2000"},{"cuit":"20376327540","origen":"Jujuy","productor":"CARDOZO, EZEQUIEL FEDERICO","sup":"4.93","cupo":""},{"cuit":"20144426089","origen":"Jujuy","productor":"CARDOZO, PEDRO EMILIO","sup":"22.89","cupo":""},{"cuit":"20272320579","origen":"Jujuy","productor":"CASASCO CALIARI, SEBASTIAN ALEJANDRO","sup":"33.18","cupo":""},{"cuit":"20376452701","origen":"Jujuy","productor":"CAZON DIEGO JOSE","sup":"7.98","cupo":"6000"},{"cuit":"23286778739","origen":"Jujuy","productor":"CAZON ELIO GUSTAVO","sup":"4.06","cupo":"5000"},{"cuit":"20937105763","origen":"Jujuy","productor":"CAZON CARDOZO, OSCAR","sup":"4.40","cupo":"5000"},{"cuit":"20178653149","origen":"Jujuy","productor":"CHAMBI, CARLOS","sup":"15.23","cupo":"12000"},{"cuit":"23341980119","origen":"Jujuy","productor":"CHAMBI, CARLOS JAVIER","sup":"15.68","cupo":"15000"},{"cuit":"27365512286","origen":"Jujuy","productor":"CHAMBI, IVANA GRISELDA","sup":"14.99","cupo":"2000"},{"cuit":"20224459387","origen":"Jujuy","productor":"CHAMBI, ROGELIO CIPRIANO","sup":"8.60","cupo":""},{"cuit":"27443498902","origen":"Jujuy","productor":"CHAMVY, ROSARIO LEONOR","sup":"2.57","cupo":"12000"},{"cuit":"20362825718","origen":"Jujuy","productor":"CHAMBI, SERGIO AGUSTIN","sup":"9.07","cupo":"8000"},{"cuit":"20278441009","origen":"Jujuy","productor":"CHAMVY, ESTEBAN FERNANDO","sup":"13.52","cupo":"12000"},{"cuit":"20375081696","origen":"Jujuy","productor":"CHOQUE BATALLANOS, LEANDRO PAOLO","sup":"10.06","cupo":"10000"},{"cuit":"20101333834","origen":"Jujuy","productor":"COFRANCESCO, FERNANDO AUGUSTO","sup":"22.33","cupo":""},{"cuit":"20245112565","origen":"Jujuy","productor":"CORTES, HECTOR RAUL","sup":"11.92","cupo":""},{"cuit":"20289453572","origen":"Jujuy","productor":"CORTES, RENE ALBERTO","sup":"11.93","cupo":"8000"},{"cuit":"20152750693","origen":"Jujuy","productor":"DAWIDOWICZ, TADEO ANTONIO","sup":"1.03","cupo":"220000"},{"cuit":"20174024007","origen":"Jujuy","productor":"DE TEZANOS PINTO, GUSTAVO CARLOS","sup":"77.39","cupo":"50000"},{"cuit":"20186122136","origen":"Jujuy","productor":"DETERLINO, ANTONIO","sup":"10.55","cupo":"3000"},{"cuit":"20401760386","origen":"Jujuy","productor":"DETERLINO, JORGE ALBERTO","sup":"8.60","cupo":"3000"},{"cuit":"20347259412","origen":"Jujuy","productor":"DETERLINO, DIEGO JAVIER","sup":"8.82","cupo":""},{"cuit":"27178407061","origen":"Jujuy","productor":"DIAZ, HILDA LILIANA","sup":"56.74","cupo":"30000"},{"cuit":"20313673031","origen":"Jujuy","productor":"FACHINI, ENZO LEONARDO","sup":"38.60","cupo":"8000"},{"cuit":"20350228404","origen":"Jujuy","productor":"FARFAN, ABEL LEONARDO GASTON","sup":"11.00","cupo":"18000"},{"cuit":"27284966568","origen":"Jujuy","productor":"FARFAN, ELIZABETH CARINA","sup":"40.72","cupo":"60000"},{"cuit":"20233825922","origen":"Jujuy","productor":"FARFAN, NELSON FERNANDO","sup":"41.40","cupo":"100000"},{"cuit":"27267935594","origen":"Jujuy","productor":"FERNANDEZ, CLAUDIA SILVINA","sup":"5.28","cupo":"8000"},{"cuit":"20120556151","origen":"Jujuy","productor":"FLORES, CARLOS HUMBERTO","sup":"24.24","cupo":"50000"},{"cuit":"20108782235","origen":"Jujuy","productor":"FLORES, RUBEN","sup":"26.04","cupo":"50000"},{"cuit":"27239463466","origen":"Jujuy","productor":"FLORES, MONICA SILVINA","sup":"4.52","cupo":"4000"},{"cuit":"20384080570","origen":"Jujuy","productor":"FLORES, SERGIO DANIEL","sup":"13.79","cupo":"10000"},{"cuit":"27358237512","origen":"Jujuy","productor":"FLORES, VANESA ABIGAIL","sup":"8.97","cupo":"4000"},{"cuit":"20929151780","origen":"Jujuy","productor":"GARNICA MENECES AGAPITO","sup":"4.53","cupo":"4000"},{"cuit":"20322104864","origen":"Jujuy","productor":"GARZON, CRISTIAN MARIANO","sup":"5.07","cupo":"8000"},{"cuit":"20339256544","origen":"Jujuy","productor":"GARZON, ENZO SEBASTIAN","sup":"5.38","cupo":"8000"},{"cuit":"20166651124","origen":"Jujuy","productor":"GARZON, JULIO CESAR","sup":"3.82","cupo":"12000"},{"cuit":"23120181289","origen":"Jujuy","productor":"GELMETTI, ANGEL DARDO","sup":"36.79","cupo":"90000"},{"cuit":"20384080759","origen":"Jujuy","productor":"GELMETTI, ANGEL GIULIANO","sup":"4.09","cupo":"10000"},{"cuit":"23389746789","origen":"Jujuy","productor":"GELMETTI, DARDO FABRIZIO","sup":"6.91","cupo":"10000"},{"cuit":"20379202919","origen":"Jujuy","productor":"GONZALEZ, CRISTIAN MAURICIO","sup":"8.68","cupo":"2000"},{"cuit":"20146379355","origen":"Jujuy","productor":"GUEBARA, EMILIO ROBERTO","sup":"14.78","cupo":"15000"},{"cuit":"27332531889","origen":"Jujuy","productor":"GUEBARA, ROMINA PAOLA","sup":"6.67","cupo":"5000"},{"cuit":"20338445394","origen":"Jujuy","productor":"GUEBARA, LUIS ALFREDO","sup":"8.41","cupo":"10000"},{"cuit":"27317776123","origen":"Jujuy","productor":"GUEBARA, INES VERONICA","sup":"34.89","cupo":"12000"},{"cuit":"20201032572","origen":"Jujuy","productor":"GUEBARA, MOISES NESTOR","sup":"49.60","cupo":"50000"},{"cuit":"20376327435","origen":"Jujuy","productor":"GUEBARA, ALVARO DANIEL","sup":"40.20","cupo":"50000"},{"cuit":"20274818329","origen":"Jujuy","productor":"GUEVARA, ALBERTO GABRIEL","sup":"14.96","cupo":"6000"},{"cuit":"20389752976","origen":"Jujuy","productor":"GUEVARA, CRISTIAN SIMON","sup":"6.35","cupo":"3000"},{"cuit":"20935240493","origen":"Jujuy","productor":"GUEVARA MIRANDA, SIMON","sup":"50.57","cupo":"15000"},{"cuit":"20229722493","origen":"Jujuy","productor":"GUEVARA, RENE MARCELO","sup":"23.85","cupo":"3000"},{"cuit":"20221866593","origen":"Jujuy","productor":"GUEVARA, FELIX ARMANDO","sup":"21.05","cupo":"5000"},{"cuit":"20180629298","origen":"Jujuy","productor":"HUALPA, ELEODORO","sup":"121.78","cupo":"30000"},{"cuit":"20108580772","origen":"Jujuy","productor":"HUANCA, JUAN HORACIO","sup":"11.98","cupo":"5000"},{"cuit":"20922363642","origen":"Jujuy","productor":"IPORRE CAZON, BRAULIO","sup":"11.78","cupo":"20000"},{"cuit":"27284048488","origen":"Jujuy","productor":"IPORRE, CAROLINA LEONOR","sup":"8.47","cupo":"10000"},{"cuit":"20275646114","origen":"Jujuy","productor":"IPORRE, JORGE LUIS","sup":"14.77","cupo":"25000"},{"cuit":"27295464688","origen":"Jujuy","productor":"IPORRE, SOLEDAD GRACIELA","sup":"5.45","cupo":"5000"},{"cuit":"20322587342","origen":"Jujuy","productor":"IPORRE, VICTOR EMANUEL","sup":"11.40","cupo":"15000"},{"cuit":"20244233091","origen":"Jujuy","productor":"LARA, DIEGO SEBASTIAN","sup":"16.00","cupo":"5000"},{"cuit":"20420727098","origen":"Jujuy","productor":"LOZA, FRANCO DANIEL","sup":"12.87","cupo":"2000"},{"cuit":"27229722129","origen":"Jujuy","productor":"LOPEZ, ALICIA","sup":"5.45","cupo":"8000"},{"cuit":"20256135370","origen":"Jujuy","productor":"LOPEZ, LUIS NICOLAS","sup":"20.28","cupo":"10000"},{"cuit":"20143128017","origen":"Jujuy","productor":"MANCINI, JOSE SEGUNDO","sup":"88.51","cupo":"30000"},{"cuit":"20117815863","origen":"Jujuy","productor":"MARAS, ADOLFO","sup":"33.75","cupo":"25000"},{"cuit":"27293203089","origen":"Jujuy","productor":"MARAZ, GRISELDA BENIGNA","sup":"22.65","cupo":"40000"},{"cuit":"20340226233","origen":"Jujuy","productor":"MARCUZZI, FABRICIO ANTONIO","sup":"33.39","cupo":"20000"},{"cuit":"20253772728","origen":"Jujuy","productor":"MARQUEZ, ROBERTO SEBASTIAN","sup":"1.00","cupo":"10000"},{"cuit":"20940920885","origen":"Jujuy","productor":"MOLINA PADILLA FAUSTINO","sup":"11.49","cupo":"4000"},{"cuit":"20301103523","origen":"Jujuy","productor":"MOLINA CALDERON, OSCAR HUGO","sup":"12.25","cupo":"5000"},{"cuit":"20332527895","origen":"Jujuy","productor":"MOLINA VILLA, ALFREDO LUIS","sup":"13.80","cupo":"10000"},{"cuit":"20308018394","origen":"Jujuy","productor":"MOLINA, JOSE ALBERTO","sup":"7.18","cupo":"5000"},{"cuit":"20930388468","origen":"Jujuy","productor":"MOLINA MARTINEZ, ASENCIO","sup":"14.56","cupo":"4000"},{"cuit":"20307313007","origen":"Jujuy","productor":"MONALDI, JUAN CARLOS MARTIN","sup":"32.32","cupo":"30000"},{"cuit":"20111604593","origen":"Jujuy","productor":"MONALDI, JUAN CARLOS","sup":"4.46","cupo":"10000"},{"cuit":"20135142302","origen":"Jujuy","productor":"MOYA MORALES, MIGUEL ANGEL","sup":"19.78","cupo":"20000"},{"cuit":"23337577539","origen":"Jujuy","productor":"ORTIZ, RODRIGO ANTONIO","sup":"8.69","cupo":"20000"},{"cuit":"20358235159","origen":"Jujuy","productor":"OVANDO, ALFREDO RUBEN","sup":"12.19","cupo":"4000"},{"cuit":"20375081556","origen":"Jujuy","productor":"OVANDO, DANIEL PABLO","sup":"12.68","cupo":"4000"},{"cuit":"20297173783","origen":"Jujuy","productor":"OVANDO, HECTOR CESAR","sup":"14.14","cupo":"4000"},{"cuit":"23418452714","origen":"Jujuy","productor":"PARI, PAULA NAZARENA","sup":"5.31","cupo":"2000"},{"cuit":"20332528271","origen":"Jujuy","productor":"PORTAL, DAN JAIRO","sup":"13.06","cupo":"12000"},{"cuit":"27359110095","origen":"Jujuy","productor":"PORTAL, FLORENCIA JAQUELINA","sup":"9.01","cupo":"20000"},{"cuit":"20357800065","origen":"Jujuy","productor":"RAMOS, ANDRES","sup":"9.89","cupo":"10000"},{"cuit":"20324695444","origen":"Jujuy","productor":"RAMOS, MIGUEL ANGEL","sup":"13.46","cupo":"12000"},{"cuit":"20332529502","origen":"Jujuy","productor":"RIVERA, NORBERTO GONZALO","sup":"23.98","cupo":"25000"},{"cuit":"20286778594","origen":"Jujuy","productor":"RIVERA, CRISTIAN","sup":"8.17","cupo":"5000"},{"cuit":"20108057794","origen":"Jujuy","productor":"RIVERO, LUIS ALBERTO","sup":"0","cupo":"3000"},{"cuit":"23428579429","origen":"Jujuy","productor":"RIVERO, HUMBERTO NICOLAS ANTONIO","sup":"15.24","cupo":"5000"},{"cuit":"20260437993","origen":"Jujuy","productor":"RODRIGUEZ, OSCAR RUBEN","sup":"32.02","cupo":"4000"},{"cuit":"23346346469","origen":"Jujuy","productor":"ROMERO, NESTOR JAVIER","sup":"4.74","cupo":"5000"},{"cuit":"20353088905","origen":"Jujuy","productor":"RUIZ, JUAN MANUEL","sup":"3.49","cupo":"1000"},{"cuit":"20236434088","origen":"Jujuy","productor":"SAGARDIA, JULIO HECTOR","sup":"17.94","cupo":"40000"},{"cuit":"23340227719","origen":"Jujuy","productor":"SALAZAR, VICTOR HUGO","sup":"33.72","cupo":"30000"},{"cuit":"20294047345","origen":"Jujuy","productor":"SERAPIO, OMAR FRANCISCO","sup":"14.17","cupo":"5000"},{"cuit":"27302462076","origen":"Jujuy","productor":"RUIZ, MARCELA ROSA","sup":"8.11","cupo":"5000"},{"cuit":"20120181212","origen":"Jujuy","productor":"SILES, JOSE ANTONIO (H)","sup":"18.78","cupo":"20000"},{"cuit":"20149572717","origen":"Jujuy","productor":"SILES, LUIS","sup":"18.83","cupo":"20000"},{"cuit":"27241014466","origen":"Jujuy","productor":"SOLANA, ADRIANA ROSA","sup":"24.50","cupo":"20000"},{"cuit":"27397397489","origen":"Jujuy","productor":"SOTO, MARIANA FERNANDA","sup":"5.53","cupo":"1000"},{"cuit":"23104718949","origen":"Jujuy","productor":"STRIZIC, JUAN CARLOS","sup":"7.87","cupo":"2000"},{"cuit":"20078095114","origen":"Jujuy","productor":"SUCESION DE DOMINGUEZ LEONCIO","sup":"10.43","cupo":"12000"},{"cuit":"20207067084","origen":"Jujuy","productor":"SUFI, MIGUEL ANGEL","sup":"14.68","cupo":"10000"},{"cuit":"27286481898","origen":"Jujuy","productor":"TARIFA, MONICA ROSANA","sup":"14.86","cupo":"8000"},{"cuit":"20171811008","origen":"Jujuy","productor":"TEJERINA, ADRIAN","sup":"15.53","cupo":"35000"},{"cuit":"20375087368","origen":"Jujuy","productor":"TEJERINA, FEDERICO ISMAEL","sup":"18.72","cupo":""},{"cuit":"20471238148","origen":"Jujuy","productor":"TEJERINA, FACUNDO CARLOS","sup":"12.60","cupo":"5000"},{"cuit":"23421512914","origen":"Jujuy","productor":"TORREJON, AYLEN DAIANA NAHIR","sup":"4.39","cupo":"3000"},{"cuit":"20240853001","origen":"Jujuy","productor":"VELASQUEZ, ANTONINO FROILAN","sup":"0","cupo":""},{"cuit":"20143738885","origen":"Jujuy","productor":"VELAZQUEZ, ELGAR ROLANDO","sup":"44.41","cupo":"15000"},{"cuit":"20386565458","origen":"Jujuy","productor":"VELASQUEZ, MICHAEL IVAN","sup":"25.08","cupo":""},{"cuit":"20325644924","origen":"Jujuy","productor":"VIDES, CRISTIAN ALFREDO","sup":"0","cupo":"2000"},{"cuit":"20148118729","origen":"Jujuy","productor":"VILLA, JUAN CARLOS","sup":"10.18","cupo":"12000"},{"cuit":"27233347049","origen":"Jujuy","productor":"YAGUALCA, MONICA BEATRIZ","sup":"10.87","cupo":"3000"},{"cuit":"20239231447","origen":"Jujuy","productor":"YEVARA, VICTOR HUGO","sup":"56.49","cupo":"30000"},{"cuit":"30712342753","origen":"Salta","productor":"AGERSAN SRL","sup":"","cupo":"3000"},{"cuit":"23258848969","origen":"Salta","productor":"ALFARO VILLEGAS MANUEL","sup":"","cupo":""},{"cuit":"30712336540","origen":"Organico","productor":"AGROPECUARIA JOSE MARIA SRL","sup":"","cupo":""}];
+
+const STAGE_COLORS = ['s1','s2','s3','s4','s5'];
+const STAGE_NAMES = ['Almácigo','Plantación','Cultivo','Cosecha','Clasificado'];
+
+const ALMACIGO_TIPOS = ['Convencional','Flotante','Bandejas apoyadas','Bandejas apoyadas en pelo de agua'];
+const SEMILLA_TIPOS = ['Regular','Peletizada'];
+const SEMILLA_VARIEDADES = ['K394','K326','MB59','MB365','MB312','MB411','MB137'];
+const TRASPLANTE_TIPOS = ['Manual','Mecánico'];
+const COSECHA_STATUS = ['Propietario','Arrendero'];
+const CLASIFICADO_TIPOS = ['Manual','Cinta'];
+
+const FUNGOSIS = ['Antracnosis (Colletotrichum tabacum)','Canilla negra (Phytophthora nicotianae)','Damping-off / mal de almácigo','Fusariosis Fusarium oxysporum','Mancha angular bacteriana','Mancha de ojo de rana (Cercospora nicotianae)','Mancha parda (Alternaria alternata)','Marchitez bacteriana (Ralstonia solanacearum)','Moho azul (Peronospora tabacina)','Oídio (Golovinomyces cichoracearum)','Podredumbre blanca (Sclerotinia sclerotiorum)','Podredumbre negra de raíces (Thielaviopsis basicola)','Rizoctonia (Rhizoctonia solani)'];
+const VIROSIS = ['Mosaico del pepino (CMV)','Mosaico del tabaco (TMV)','Necrosis apical (TEV)','Virus Y de la papa (PVY)'];
+const BACTERIOSIS = ['Cancro bacteriano (Clavibacter michiganensis)','Fuego salvaje del tabaco (Pseudomonas syringae)','Mancha angular bacteriana','Marchitez bacteriana (Ralstonia solanacearum)','Podredumbre blanda bacteriana (Pectobacterium carotovorum)'];
+const PLAGAS = ['Arañuela roja (Tetranychus urticae)','Chinche verde (Nezara viridula)','Gusano cogollero (Spodoptera frugiperda)','Gusano cortador (Agrotis ipsilon)','Gusano del tabaco (Manduca sexta)','Gusano medidor (Trichoplusia ni)','Minador de hojas (Liriomyza huidobrensis)','Mosca blanca (Bemisia tabaci)','Nematodo agallador (Meloidogyne incognita)','Pulgón verde (Myzus persicae)','Pulguilla del tabaco (Epitrix hirtipennis)','Trips del tabaco (Frankliniella fusca)','Trips occidental (Frankliniella occidentalis)'];
+
+// ============================================================
+//  STATE
+// ============================================================
+let currentProducer = null;
+let currentStage = 0;
+let formData = {}; // { cuit: { stage: { fields } } }
+
+function getData(cuit, stage) {
+  if (!formData[cuit]) formData[cuit] = {};
+  if (!formData[cuit][stage]) formData[cuit][stage] = {};
+  return formData[cuit][stage];
+}
+
+// ============================================================
+//  RENDER SIDEBAR
+// ============================================================
+function renderSidebar(filter = '') {
+  const list = document.getElementById('producerList');
+  const lf = filter.toLowerCase();
+  const filtered = PRODUCERS.filter(p =>
+    p.productor.toLowerCase().includes(lf) ||
+    p.cuit.includes(lf) ||
+    p.origen.toLowerCase().includes(lf)
+  );
+  list.innerHTML = filtered.map(p => {
+    const isActive = currentProducer && currentProducer.cuit === p.cuit;
+    const stagesCompleted = formData[p.cuit] ? Object.keys(formData[p.cuit]).length : 0;
+    const dots = STAGE_COLORS.map((c,i) =>
+      `<div class="dot ${stagesCompleted > i ? 'filled '+c : ''}"></div>`
+    ).join('');
+    const oc = p.origen === 'Salta' ? 'origin-salta' : p.origen === 'Organico' ? 'origin-organico' : 'origin-jujuy';
+    return `<div class="producer-item ${isActive ? 'active' : ''}" onclick="selectProducer('${p.cuit}')">
+      <div class="producer-name">${p.productor}</div>
+      <div class="producer-meta">
+        <span class="origin-badge ${oc}">${p.origen}</span>
+        ${p.sup ? p.sup+' ha' : ''}
+      </div>
+      <div class="progress-dots">${dots}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectProducer(cuit) {
+  currentProducer = PRODUCERS.find(p => p.cuit === cuit);
+  renderSidebar(document.getElementById('searchInput').value);
+  renderMain();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  renderSidebar(e.target.value);
+});
+
+// ============================================================
+//  RENDER MAIN
+// ============================================================
+function renderMain() {
+  if (!currentProducer) return;
+  const d = currentProducer;
+  const main = document.getElementById('mainContent');
+
+  const oc = d.origen === 'Salta' ? 'origin-salta' : d.origen === 'Organico' ? 'origin-organico' : 'origin-jujuy';
+
+  main.innerHTML = `
+    <div class="producer-header">
+      <div>
+        <h2>${d.productor}</h2>
+        <div class="cuit">CUIT: ${d.cuit} &nbsp;·&nbsp; <span class="origin-badge ${oc}" style="font-size:11px">${d.origen}</span></div>
+      </div>
+      <div class="producer-stats">
+        ${d.sup ? `<div class="stat-item"><div class="stat-value">${parseFloat(d.sup).toFixed(1)}</div><div class="stat-label">Sup. 2025-26 (ha)</div></div>` : ''}
+        ${d.cupo ? `<div class="stat-item"><div class="stat-value">${parseInt(d.cupo).toLocaleString()}</div><div class="stat-label">Cupo 26-27 (kg)</div></div>` : ''}
+      </div>
+    </div>
+
+    <div class="stages-nav" id="stagesNav">
+      ${STAGE_NAMES.map((s,i) => `
+        <div class="stage-tab ${currentStage===i?'active t'+(i+1):''}" onclick="setStage(${i})">
+          <div>${s}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div id="stageForm"></div>
+  `;
+
+  renderStageForm();
+}
+
+function setStage(idx) {
+  currentStage = idx;
+  renderMain();
+}
+
+// ============================================================
+//  GEO SECTION
+// ============================================================
+function geoHtml(stageKey) {
+  const d = getData(currentProducer.cuit, stageKey);
+  const fincas = d.fincas || [];
+  const fincaItems = fincas.map((f,i) => `
+    <div class="coord-item">
+      <span class="coord-name">${f.nombre || 'Finca '+(i+1)}</span>
+      <span class="coord-val">${f.lat}, ${f.lng}</span>
+      <button class="coord-del" onclick="removeFinca(${i},'${stageKey}')">×</button>
+    </div>
+  `).join('');
+
+  const hasPins = fincas.length > 0;
+  const mapPins = fincas.slice(0,5).map((f,i) => {
+    // Normalize to map preview (rough)
+    const px = 50 + (parseFloat(f.lng) % 1) * 400;
+    const py = 80 + (parseFloat(f.lat) % 1) * 200;
+    return `<div class="map-pin" style="left:${(i*18+30)%80}%;top:${(i*22+25)%60}%"></div>`;
+  }).join('');
+
+  return `
+    <div class="geo-section">
+      <div class="geo-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Georreferenciación de Finca
+      </div>
+      <div class="finca-add-row">
+        <input class="finca-name-input" id="fincaNameInput" placeholder="Nombre / identificación de la finca...">
+        <button class="btn-geo" onclick="captureGeo('${stageKey}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Capturar ubicación
+        </button>
+        <button class="btn-geo" onclick="manualGeo('${stageKey}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Ingresar manual
+        </button>
+      </div>
+      ${fincas.length > 0 ? `<div class="coord-list">${fincaItems}</div>` : ''}
+      <div class="geo-map-preview">
+        ${hasPins ? mapPins : `<div class="map-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:6px;display:block;margin-left:auto;margin-right:auto"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Sin coordenadas registradas</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function captureGeo(stageKey) {
+  if (!navigator.geolocation) {
+    showToast('Geolocalización no disponible en este dispositivo', true);
+    return;
+  }
+  showToast('Obteniendo ubicación GPS...');
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const nombre = document.getElementById('fincaNameInput')?.value || 'Finca';
+      const d = getData(currentProducer.cuit, stageKey);
+      if (!d.fincas) d.fincas = [];
+      d.fincas.push({
+        nombre,
+        lat: pos.coords.latitude.toFixed(6),
+        lng: pos.coords.longitude.toFixed(6),
+        accuracy: pos.coords.accuracy.toFixed(0),
+        timestamp: new Date().toLocaleString('es-AR')
+      });
+      showToast(`📍 ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)} — Precisión: ${pos.coords.accuracy.toFixed(0)}m`);
+      renderStageForm();
+    },
+    err => showToast('Error GPS: ' + err.message, true),
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function manualGeo(stageKey) {
+  const lat = prompt('Ingresá la LATITUD (ej: -23.456789):');
+  if (!lat) return;
+  const lng = prompt('Ingresá la LONGITUD (ej: -65.123456):');
+  if (!lng) return;
+  const nombre = document.getElementById('fincaNameInput')?.value || 'Finca';
+  if (isNaN(parseFloat(lat)) || isNaN(parseFloat(lng))) {
+    showToast('Coordenadas inválidas', true);
+    return;
+  }
+  const d = getData(currentProducer.cuit, stageKey);
+  if (!d.fincas) d.fincas = [];
+  d.fincas.push({ nombre, lat: parseFloat(lat).toFixed(6), lng: parseFloat(lng).toFixed(6), timestamp: new Date().toLocaleString('es-AR') });
+  showToast('Coordenada guardada ✓');
+  renderStageForm();
+}
+
+function removeFinca(idx, stageKey) {
+  const d = getData(currentProducer.cuit, stageKey);
+  d.fincas.splice(idx, 1);
+  renderStageForm();
+}
+
+// ============================================================
+//  STAGE FORMS
+// ============================================================
+function renderStageForm() {
+  const form = document.getElementById('stageForm');
+  if (!form) return;
+  const stage = currentStage;
+  const cuit = currentProducer.cuit;
+  const d = getData(cuit, stage);
+
+  let html = '';
+
+  if (stage === 0) html = almacijoForm(d);
+  else if (stage === 1) html = plantacionForm(d);
+  else if (stage === 2) html = cultivoForm(d);
+  else if (stage === 3) html = cosechaForm(d);
+  else if (stage === 4) html = clasificadoForm(d);
+
+  form.innerHTML = html + `
+    <div class="save-bar">
+      <button class="btn-clear" onclick="clearForm()">Limpiar</button>
+      <button class="btn-save" onclick="saveForm()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar
+      </button>
+    </div>
+  `;
+}
+
+function almacijoForm(d) {
+  return `
+    ${geoHtml(0)}
+    <div class="section-title s1-title">Datos del Almácigo</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Fecha visita a campo <span class="req">*</span></div>
+        <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Superficie a plantar (ha)</div>
+        <input type="number" class="field-input" id="f_sup_plantar" step="0.01" placeholder="0.00" value="${d.sup_plantar||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Tipo de almácigo</div>
+        <select class="field-select" id="f_tipo_almacigo">
+          <option value="">— Seleccionar —</option>
+          ${ALMACIGO_TIPOS.map(t=>`<option ${d.tipo_almacigo===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Superficie almácigo (ha)</div>
+        <input type="number" class="field-input" id="f_sup_almacigo" step="0.01" placeholder="0.00" value="${d.sup_almacigo||''}">
+      </div>
+    </div>
+
+    <div class="section-title s1-title">Semilla</div>
+    <div class="form-grid three">
+      <div class="field-group">
+        <div class="field-label">Tipo de semilla</div>
+        <select class="field-select" id="f_semilla_tipo">
+          <option value="">— Seleccionar —</option>
+          ${SEMILLA_TIPOS.map(t=>`<option ${d.semilla_tipo===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Variedad 1</div>
+        <select class="field-select" id="f_semilla_var1">
+          <option value="">— Seleccionar —</option>
+          ${SEMILLA_VARIEDADES.map(t=>`<option ${d.semilla_var1===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Sup. Var. 1 (ha)</div>
+        <input type="number" class="field-input" id="f_sup_var1" step="0.01" placeholder="0.00" value="${d.sup_var1||''}">
+      </div>
+      <div class="field-group" style="grid-column:2">
+        <div class="field-label">Variedad 2</div>
+        <select class="field-select" id="f_semilla_var2">
+          <option value="">— Seleccionar —</option>
+          ${SEMILLA_VARIEDADES.map(t=>`<option ${d.semilla_var2===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Sup. Var. 2 (ha)</div>
+        <input type="number" class="field-input" id="f_sup_var2" step="0.01" placeholder="0.00" value="${d.sup_var2||''}">
+      </div>
+    </div>
+
+    <div class="section-title s1-title">Porcentaje del total (%)</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">% Regular</div>
+        <input type="number" class="field-input" id="f_pct_regular" min="0" max="100" placeholder="0" value="${d.pct_regular||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Observaciones</div>
+        <textarea class="field-textarea" id="f_obs" placeholder="Observaciones generales...">${d.obs||''}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function plantacionForm(d) {
+  return `
+    ${geoHtml(1)}
+    <div class="section-title s2-title">Datos de Plantación</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Fecha visita a campo <span class="req">*</span></div>
+        <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Superficie a plantar (ha)</div>
+        <input type="number" class="field-input" id="f_sup_plantar" step="0.01" placeholder="0.00" value="${d.sup_plantar||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Tipo de transplante</div>
+        <select class="field-select" id="f_tipo_transplante">
+          <option value="">— Seleccionar —</option>
+          ${TRASPLANTE_TIPOS.map(t=>`<option ${d.tipo_transplante===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Fecha de plantación</div>
+        <input type="date" class="field-input" id="f_fecha_plantacion" value="${d.fecha_plantacion||''}">
+      </div>
+    </div>
+
+    <div class="section-title s2-title">Fertilización</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Formulación 1</div>
+        <input type="text" class="field-input" id="f_fertil1" placeholder="ej: 13-11-27" value="${d.fertil1||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Dosis Formulación 1 (kg/ha)</div>
+        <input type="number" class="field-input" id="f_fertil1_kg" placeholder="0" value="${d.fertil1_kg||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Formulación 2</div>
+        <input type="text" class="field-input" id="f_fertil2" placeholder="ej: 13-00-44" value="${d.fertil2||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Dosis Formulación 2 (kg/ha)</div>
+        <input type="number" class="field-input" id="f_fertil2_kg" placeholder="0" value="${d.fertil2_kg||''}">
+      </div>
+    </div>
+
+    <div class="form-grid full" style="margin-top:0">
+      <div class="field-group">
+        <div class="field-label">Observaciones</div>
+        <textarea class="field-textarea" id="f_obs" placeholder="Observaciones de plantación...">${d.obs||''}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function cultivoForm(d) {
+  const checkList = (arr, field, prefix) => arr.map(item => {
+    const checked = (d[field]||[]).includes(item);
+    return `<div class="checkbox-item">
+      <input type="checkbox" id="${prefix}_${item.replace(/\s/g,'_').slice(0,20)}" 
+        ${checked?'checked':''} onchange="toggleCheck('${field}','${item}')">
+      <label for="${prefix}_${item.replace(/\s/g,'_').slice(0,20)}">${item}</label>
+    </div>`;
+  }).join('');
+
+  return `
+    ${geoHtml(2)}
+    <div class="section-title s3-title">Datos de Cultivo</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Fecha visita a campo <span class="req">*</span></div>
+        <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Fecha de desflore</div>
+        <input type="date" class="field-input" id="f_fecha_desflore" value="${d.fecha_desflore||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Pérdidas estimadas (%)</div>
+        <input type="number" class="field-input" id="f_perdidas" min="0" max="100" step="0.1" placeholder="0.0" value="${d.perdidas||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Descripción sanitaria</div>
+        <textarea class="field-textarea" id="f_sanidad_desc" placeholder="Descripción del estado sanitario..." style="min-height:60px">${d.sanidad_desc||''}</textarea>
+      </div>
+    </div>
+
+    <div class="section-title s3-title">Sanidad — Patógenos detectados</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Fungosis</div>
+        <div class="checkbox-group">${checkList(FUNGOSIS,'fungosis','fung')}</div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Virosis</div>
+        <div class="checkbox-group">${checkList(VIROSIS,'virosis','viro')}</div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Bacteriosis</div>
+        <div class="checkbox-group">${checkList(BACTERIOSIS,'bacteriosis','bact')}</div>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Plagas</div>
+        <div class="checkbox-group">${checkList(PLAGAS,'plagas','plag')}</div>
+      </div>
+    </div>
+
+    <div class="form-grid full" style="margin-top:0">
+      <div class="field-group">
+        <div class="field-label">Observaciones</div>
+        <textarea class="field-textarea" id="f_obs" placeholder="Observaciones del cultivo...">${d.obs||''}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function cosechaForm(d) {
+  return `
+    ${geoHtml(3)}
+    <div class="section-title s4-title">Datos de Cosecha</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Fecha visita a campo <span class="req">*</span></div>
+        <input type="date" class="field-input" id="f_fecha_visita" value="${d.fecha_visita||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Inicio de cosecha</div>
+        <input type="date" class="field-input" id="f_fecha_inicio" value="${d.fecha_inicio||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Estatus estufas</div>
+        <select class="field-select" id="f_estufas_status">
+          <option value="">— Seleccionar —</option>
+          ${COSECHA_STATUS.map(t=>`<option ${d.estufas_status===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title s4-title">Estufas de Curing — Box</div>
+    <div class="form-grid three">
+      <div class="field-group">
+        <div class="field-label">Box 12 canastos (cant)</div>
+        <input type="number" class="field-input" id="f_box12" min="0" placeholder="0" value="${d.box12||''}">
+      </div>
+    </div>
+
+    <div class="section-title s4-title">Estufas BC — Bulk Curing</div>
+    <div class="form-grid three">
+      <div class="field-group">
+        <div class="field-label">BC 360 peines (cant)</div>
+        <input type="number" class="field-input" id="f_bc360" min="0" placeholder="0" value="${d.bc360||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">BC 270 peines (cant)</div>
+        <input type="number" class="field-input" id="f_bc270" min="0" placeholder="0" value="${d.bc270||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">BC 180 peines (cant)</div>
+        <input type="number" class="field-input" id="f_bc180" min="0" placeholder="0" value="${d.bc180||''}">
+      </div>
+    </div>
+
+    <div class="section-title s4-title">Estufas CV — Convencional</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">CV 2500 cañas (cant)</div>
+        <input type="number" class="field-input" id="f_cv2500" min="0" placeholder="0" value="${d.cv2500||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">CV 2000 cañas (cant)</div>
+        <input type="number" class="field-input" id="f_cv2000" min="0" placeholder="0" value="${d.cv2000||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">CV 1500 cañas (cant)</div>
+        <input type="number" class="field-input" id="f_cv1500" min="0" placeholder="0" value="${d.cv1500||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">CV 1000 cañas (cant)</div>
+        <input type="number" class="field-input" id="f_cv1000" min="0" placeholder="0" value="${d.cv1000||''}">
+      </div>
+    </div>
+
+    <div class="form-grid full" style="margin-top:0">
+      <div class="field-group">
+        <div class="field-label">Observaciones</div>
+        <textarea class="field-textarea" id="f_obs" placeholder="Observaciones de cosecha...">${d.obs||''}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function clasificadoForm(d) {
+  return `
+    ${geoHtml(4)}
+    <div class="section-title s5-title">Datos de Clasificado</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Tipo de clasificación</div>
+        <select class="field-select" id="f_tipo_clasif">
+          <option value="">— Seleccionar —</option>
+          ${CLASIFICADO_TIPOS.map(t=>`<option ${d.tipo_clasif===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title s5-title">Capacitaciones</div>
+    <div class="form-grid">
+      <div class="field-group">
+        <div class="field-label">Cap. Materia extraña</div>
+        <select class="field-select" id="f_cap_materia">
+          <option value="">— Seleccionar —</option>
+          <option ${d.cap_materia==='SI'?'selected':''}>SI</option>
+          <option ${d.cap_materia==='NO'?'selected':''}>NO</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Fecha cap. materia extraña</div>
+        <input type="date" class="field-input" id="f_fecha_cap_materia" value="${d.fecha_cap_materia||''}">
+      </div>
+      <div class="field-group">
+        <div class="field-label">Cap. Humedad</div>
+        <select class="field-select" id="f_cap_humedad">
+          <option value="">— Seleccionar —</option>
+          <option ${d.cap_humedad==='SI'?'selected':''}>SI</option>
+          <option ${d.cap_humedad==='NO'?'selected':''}>NO</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Fecha cap. humedad</div>
+        <input type="date" class="field-input" id="f_fecha_cap_humedad" value="${d.fecha_cap_humedad||''}">
+      </div>
+    </div>
+
+    <div class="form-grid full" style="margin-top:0">
+      <div class="field-group">
+        <div class="field-label">Observaciones</div>
+        <textarea class="field-textarea" id="f_obs" placeholder="Observaciones del clasificado...">${d.obs||''}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+//  CHECKBOX TOGGLE
+// ============================================================
+function toggleCheck(field, value) {
+  const d = getData(currentProducer.cuit, currentStage);
+  if (!d[field]) d[field] = [];
+  const idx = d[field].indexOf(value);
+  if (idx >= 0) d[field].splice(idx, 1);
+  else d[field].push(value);
+}
+
+// ============================================================
+//  SAVE / CLEAR
+// ============================================================
+function collectFields() {
+  const d = getData(currentProducer.cuit, currentStage);
+  document.querySelectorAll('[id^="f_"]').forEach(el => {
+    const key = el.id.replace('f_','');
+    if (el.type === 'checkbox') return; // handled separately
+    d[key] = el.value;
+  });
+}
+
+function saveForm() {
+  collectFields();
+  renderSidebar(document.getElementById('searchInput').value);
+  showToast('Datos guardados correctamente ✓');
+}
+
+function clearForm() {
+  if (!confirm('¿Limpiar todos los datos de esta etapa?')) return;
+  const d = getData(currentProducer.cuit, currentStage);
+  const fincas = d.fincas; // preserve geo
+  Object.keys(d).forEach(k => delete d[k]);
+  if (fincas) d.fincas = fincas;
+  renderStageForm();
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  const m = document.getElementById('toastMsg');
+  m.textContent = msg;
+  t.style.background = isError ? 'var(--red)' : 'var(--green)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+renderSidebar();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'flex';
+});
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'none';
+});
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  }
+}
+</script>
+
+<div id="installBanner">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="2">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+    <path d="M8 12l4 4 4-4M12 8v8"/>
+  </svg>
+  <div class="ib-text">
+    <strong>Instalar GAP Tabaco</strong>
+    <span>Agregá la app a tu pantalla de inicio para usarla sin internet</span>
+  </div>
+  <button class="btn-install" onclick="installApp()">Instalar</button>
+  <button class="btn-install-close" onclick="document.getElementById('installBanner').style.display='none'">×</button>
+</div>
+</body>
+</html>
